@@ -1,38 +1,26 @@
-# Importing the modules
+# Import the required Libraries
 from tkinter import *
-import tkinter as tk
-import tkinter.font as font
+from tkinter import ttk, filedialog
+from tkinter.filedialog import askopenfile
+import os
+
+# Create an instance of tkinter frame
 win = Tk()
 
+# Set the geometry of tkinter frame
+win.geometry("700x350")
 
-# Creating the window
-win.geometry('500x460') # Changes Size of win
-win.resizable(False,False) # It is used to fix a size for a win
-win.title('SWARA')# Gives the title to window
-win.configure(bg='paleturquoise') # It configures features of window once it is made
+def open_file():
+   file = filedialog.askopenfile(mode='r', filetypes=[('Python Files', '*.py')])
+   if file:
+      filepath = os.path.abspath(file.name)
+      Label(win, text="The File is located at : " + str(filepath), font=('Aerial 11')).pack()
 
-text1 = Label(win,text="Test",font = ("Times",24),bg = 'paleturquoise') #Label
-text1.place(relx = 1, rely = 2)
+# Add a Label widget
+label = Label(win, text="Click the Button to browse the Files", font=('Georgia 13'))
+label.pack(pady=10)
 
-fr = Frame(win,bd = 10,width  = 400, height = 200)
-#fr.grid(row = 1,column = 1)
+# Create a Button
+ttk.Button(win, text="Browse", command=open_file).pack(pady=20)
 
-
-# Creating the fonts
-font1 = font.Font(family='Daytona Condensed Light  ', size='30')
-font2 = font.Font(family='times', size='18')
-font3 = font.Font(family='arial', size='16')
-
-
-# Creating the swara label
-main = tk.Label(win, text='SWARA',font = font1, fg='blue' , bg= 'paleturquoise')
-main['font'] = font1
-main.place(x=250 , y= 30, anchor='center')
-
-
-# Creating the art label
-art = tk.Label(win, text='Python Program', fg='crimson' , bg= 'paleturquoise')
-art['font'] = font2
-art.place(x=170, y=420)
 win.mainloop()
-

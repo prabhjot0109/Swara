@@ -1,5 +1,8 @@
 from tkinter import *
-# import sqlalchemy as sq
+from tkinter import ttk, filedialog
+from tkinter.filedialog import askopenfile
+import os
+
 #import matplotlib.pyplot as plt
 
 
@@ -15,7 +18,7 @@ def fileWin():
         pswd = passvalue.get()
         user = uservalue.get()
 
-        win_root.geometry("300x200")
+        win_root.geometry("400x270")
 
         #File Header Frame
         file_h_fr=Frame(win_root, borderwidth= 6, relief = GROOVE )
@@ -30,28 +33,46 @@ def fileWin():
                         bg="paleturquoise" , fg = "Red", font = ("Posterama  10 bold") )
         inst_l.place(x = 10,y = 50)
 
+        #Function for taking File Input 
+        def fileInput(b_x,b_y):
+                global filePath
+                file = filedialog.askopenfile(mode='r', filetypes=[('Python Files', '*.py')])
+                if file:
+                        filePath = os.path.abspath(file.name)
+                        file_loc_l = Label(win_root, text=str(filePath),font = "raleway 10 bold", bg="paleturquoise")
+                        file_loc_l.place(x = b_x, y = (b_y + 30))
+                        filePath = str(filePath)
+                        
+
         #User File
         user_file_l = Label(win_root , text= "Your File :   " , bg="paleturquoise")
         user_file_l.place(x= 30 , y = 85)
+        user_file_but = Button(win_root , text= "Browse",command=lambda : fileInput(120,85))
+        user_file_but.place(x=120, y = 85)
+        user_file_loc = filePath
+        
+ 
 
-        user_file_entry = Entry(win_root , textvariable =uservalue )
-        user_file_entry.place(x=120, y = 85)
-
-        #Password
+        #Original File
         org_music_l = Label(win_root , text= "Original : " , bg="paleturquoise")  
-        org_music_l.place(x = 30,y=110)
+        org_music_l.place(x = 30,y=140)
+        org_file_but = Button(win_root , text= "Browse",command=lambda : fileInput(120,140))
+        org_file_but.place(x=120, y = 140)
+        orgMusic_file_loc = filePath
 
-        org_music_entry = Entry(win_root , textvariable = passvalue )
-        org_music_entry.place(x=120 ,y = 110)
+        
         
         #Process Button
-        process_b = Button(win_root, fg="red", text = "Process"  ,font = "raleway 12 bold",)
-        process_b.place(x = 110, y = 145)
+        process_b = Button(win_root, fg="red", text = "Process"  ,font = "raleway 12 bold")
+        process_b.place(x = 110, y = 210)
+
+        print(user_file_loc,orgMusic_file_loc,sep="\n")
         
 
 
 #---------------- Graph Input Win -------------------
-def graphWin():                   
+def graphWin():
+                          
         clearWin(win_root)
         win_root.geometry("600x600") 
         win_root.configure(bg="paleturquoise")
@@ -142,6 +163,7 @@ win_root.resizable(False,False)
 win_root.title("Swara")
 
 #Global Variables
+filePath = ""
 uservalue = StringVar()
 passvalue = StringVar()
 
