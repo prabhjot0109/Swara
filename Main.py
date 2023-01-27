@@ -36,15 +36,16 @@ def loginWin():
 
 #__main__
 
+#--------------- Main Window ---------------------
+win_root = Tk() 
+
 #Global Variables
 uservalue = StringVar()
 passvalue = StringVar()
 
-#--------------- Main Window ---------------------
-win_root = Tk() 
 
 #Geometry Of Win
-win_root.geometry("500x600")
+win_root.geometry("500x500")
 win_root.resizable(False,False)
 
 #Window Title
@@ -62,15 +63,19 @@ wel_text.pack()
 #Import image
 sw_photo = PhotoImage(file="Images/logo.png")
 sw_image = Label(image=sw_photo)
-sw_image.pack(side = TOP, fill = X , padx=34 , pady =56)
-
-#Swara Text
-sw_label=Label(text="SWARA", bg="green" , fg="blue", padx= 11,pady = 23,font= ("arial",23, "bold")
-            ,borderwidth= 5, relief= SUNKEN)
-sw_label.pack()
+sw_image.place(x = 250,y = 200,anchor="center")
 
 #Start Button
-start_b = Button(win_root, fg="red", text = "START"  ,font = " arial 10 bold", bg= "white" , command =  loginWin)
-start_b.pack(side = BOTTOM)
+start_b = Button(win_root, text = "START"  ,font = " arial 10 bold", width = 30, height= 5, bd = 5 
+                  ,relief = GROOVE ,fg="red", bg= "white" , command =  loginWin)
+start_b.place(x = 250,y = 400,anchor='center')
+
+
+#Swara Text
+# sw_label=Label(text="SWARA", bg="green" , fg="blue", padx= 11,pady = 23,font= ("arial",23, "bold")
+#             ,borderwidth= 5, relief= SUNKEN)
+# sw_label.place(x = 250,y = 360,anchor='center')
+
+
 
 win_root.mainloop()
