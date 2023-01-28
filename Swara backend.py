@@ -17,7 +17,7 @@ record = audio.open(
     input=True,
     frames_per_buffer=FRAMES_PER_BUFFER
 )
-user_choice= int(input("press 1 to start recording the song you want to      compare.\npress 2 to upload the song you want to compare."))
+user_choice= int(input("press 1 to start recording the song you want to compare.\npress 2 to upload the song you want to compare."))
 
 if (user_choice==1):
     
@@ -40,14 +40,14 @@ if (user_choice==1):
     record.close()
     audio.terminate()
 
-    specimen = wave.open('test.wav', 'wb')
+    specimen = wave.open('user.wav', 'wb')
     specimen.setnchannels(CHANNELS)
     specimen.setsampwidth(audio.get_sample_size(FORMAT))
     specimen.setframerate(RATE)
     specimen.writeframes(b''.join(frames))
     specimen.close()
 
-    file_spec = wave.open('test.wav', 'rb')
+    file_spec = wave.open('user.wav', 'rb')
     sample_freq = file_spec.getframerate()
     frames = file_spec.getnframes()
     signal_wave = file_spec.readframes(-1)
