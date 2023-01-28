@@ -1,4 +1,3 @@
-# python -m pip install pyaudio
 import pyaudio
 import wave
 import matplotlib.pyplot as plt
@@ -89,16 +88,12 @@ time = frames / sample_freq
 arr2 = npy.frombuffer(signal_wave, dtype=npy.int16)
 times2 = npy.linspace(0, time, num=frames)
 
-print(time,arr)
-
 
 plt.figure(figsize=(15, 5))
-plt.plot(times, arr,color = 'red')
-plt.plot(times2,arr2,'g')
+plt.plot(times, arr , color = 'pink')
+plt.plot(times2,arr2, color = 'paleturquoise')
 plt.ylabel('Sound Wave')
 plt.xlabel('Time (s)')
 plt.xlim(0, time)
 plt.title('Graph of the specimen and original song')
 plt.show()
-
-
