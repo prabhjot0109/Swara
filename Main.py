@@ -2,8 +2,11 @@ from tkinter import *
 from tkinter import ttk, filedialog
 from tkinter.filedialog import askopenfile
 import os
+import matplotlib.pyplot as plt
+import numpy as np
 
-#import matplotlib.pyplot as plt
+
+#imp ort matplotlib.pyplot as plt
 
 
 #Function for clearing Win
@@ -29,7 +32,7 @@ def fileWin():
         file_h_text.pack()
 
         #Instruction Text
-        inst_l = Label(win_root,text="Input your file and Original Music File Here.",
+        inst_l = Label(win_root,text="Input your recorded music file and Original Music File Here.",
                         bg="paleturquoise" , fg = "Red", font = ("Posterama  10 bold") )
         inst_l.place(x = 10,y = 50)
 
@@ -45,7 +48,7 @@ def fileWin():
                         
 
         #User File
-        user_file_l = Label(win_root , text= "Your File :   " , bg="paleturquoise")
+        user_file_l = Label(win_root , text= "Your Music File :   " , bg="paleturquoise")
         user_file_l.place(x= 30 , y = 85)
         user_file_but = Button(win_root , text= "Browse",command=lambda : fileInput(120,85))
         user_file_but.place(x=120, y = 85)
@@ -54,16 +57,14 @@ def fileWin():
  
 
         #Original File
-        org_music_l = Label(win_root , text= "Original : " , bg="paleturquoise")  
+        org_music_l = Label(win_root , text= "Original File : " , bg="paleturquoise")  
         org_music_l.place(x = 30,y=140)
         org_file_but = Button(win_root , text= "Browse",command=lambda : fileInput(120,140))
         org_file_but.place(x=120, y = 140)
         orgMusic_file_loc = filePath
-
-        
         
         #Process Button
-        process_b = Button(win_root, fg="red", text = "Process"  ,font = "raleway 12 bold")
+        process_b = Button(win_root, fg="red", text = "Process"  ,font = "raleway 12 bold" , command=graphWin)
         process_b.place(x = 110, y = 210)
 
         print(user_file_loc,orgMusic_file_loc,sep="\n")
@@ -88,27 +89,59 @@ def graphWin():
         grp_text=Label(grp_h_fr, text="GRAPH" ,bg="white", fg = "red", font= ("Posterama  20 bold"), padx = 200)
         grp_text.pack()
 
+# x = np.array([1, 2, 3, 4])
+# y = x*2
+
+# plt.plot(x, y)
+
+# x1 = [2, 4, 6, 8]
+# y1 = [3, 5, 7, 9]
+
+# plt.plot(x, y1, '-.')
+# plt.xlabel("X-axis data")
+# plt.ylabel("Y-axis data")
+# plt.title('multiple plots')
+
+# plt.fill_between(x, y, y1, color='green', alpha=0.5)
+# plt.show()
+
+# plt.axvline(2007, color='r', linestyle='dashed')
+# plt.text(2007.5, 40000, 'Great Financial Crash', fontsize=8)
+
+# year = [2000, 2005, 2010, 2015, 2030]
+# GDP = [6000, 10000, 15000, 16000, 27000]
+
+# plt.plot(year, GDP, color = 'red')
+
+# plt.plot(year, gdp, linestyle='dashed')
+# plt.axvline(2007, color='r', linestyle='dashed')
+# plt.text(2007.5, 40000, 'Great Financial Crash', fontsize=8)
+        #plt.plot(df['Frequency'],df['Pitch'],marker ='o',color = 'green')
+
+        def ackWin():
+                clearWin(win_root)
+                win_root.geometry("260x200")
+                win_root.title("Acknowledgement")
+
+
 
         # Creting the graph importing label
         result = Label(win_root, text='', bg='white', width=80 ,font= ("Posterama  20 bold"))     
         result.place(x=150, y=160 , height =400)
+        
         # Creating the graph
-        #graph_img = ImageTk.PhotoImage(Image.open("graph.png"))
-        #plt.plot(df['Frequency'],df['Pitch'],marker ='o',color = 'green')
+
+        year = [2000, 2005, 2010, 2015, 2030]
+        GDP = [6000, 10000, 15000, 16000, 27000]
+        plt.plot(year, GDP, color = 'red', linestyle='dashed')
+
         plt.xticks(rotation="vertical")
         plt.xlabel("Frequency")
         plt.ylabel("NOPitch")
         plt.legend(["CuFrequency"])
         plt.show()
 
-
-
-
-
-
-
-        # Creating close button
-    
+        # Creating close button    
         log_b = Button(win_root, fg="red", text = "CLOSE"  ,font = "raleway 12 bold", command = ackWin)
         log_b.place(x =170, y=180)
 

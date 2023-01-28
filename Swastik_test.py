@@ -1,132 +1,71 @@
-from tkinter import *
+# python -m pip install pyaudio
+import pyaudio
+import wave
+import matplotlib.pyplot as plt
+import numpy as np
 
-root = Tk()
+FRAMES_PER_BUFFER = 3200
+FORMAT = pyaudio.paInt16
+CHANNELS = 1
+RATE = 16000
 
-#width x height
-root.geometry("500x400")
-#Windoe title
-root.title("Swara")
-#width,height
-root.minsize(200,100)
-#width,height
-root.maxsize(800,900)
+pa = pyaudio.PyAudio()
 
+stream = pa.open(
+    format=FORMAT,
+    channels=CHANNELS,
+    rate=RATE,
+    input=True,
+    frames_per_buffer=FRAMES_PER_BUFFER
+)
 
-# Frame in tkinter
-f1=Frame(root, bg="white", borderwidth= 2, relief = SUNKEN )
-f1.pack(side=LEFT, fill = Y)
+print('start recording')
 
-f2=Frame(root, bg="white", borderwidth= 6, relief = SUNKEN )
-f2.pack(side=TOP, fill = X)
-
-l=Label(f1, text="Python Project" ,bg="red")
-l.pack(pady=142)
-
-l=Label(f2, text="""Welcome to Swara.
-                    A way to trace your progress """ ,bg="white", fg = "red",
-                     font= "times 20 bold", padx = 200)
-l.pack()
-
-# work of command
-def win():
-    
-    win_root = Tk()
-    win_root.geometry("500x400")
-    user=Label(win_root , text= "Username ID -  ")
-    password=Label(win_root , text= "Password - ")
-    
+seconds = 8
+frames = []
+second_tracking = 0
+second_count = 0
+for i in range(0, int(RATE/FRAMES_PER_BUFFER*seconds)):
+    data = stream.read(FRAMES_PER_BUFFER)
+    frames.append(data)
+    second_tracking += 1
+    if second_tracking == RATE/FRAMES_PER_BUFFER:
+        second_count += 1
+        second_tracking = 0
+        print(f'Time Left: {seconds - second_count} seconds')
 
 
-    user.place(x=45,y=54)
-    password.place(x=54,y =0)
+stream.stop_stream()
+stream.close()
+pa.terminate()
 
-    #Variable classes in tkinter
-    #BooleanVar, DoubleVar, IntVar, StringVar.
-
-    uservalue= StringVar()
-    passvalue= StringVar()
-
-    userentry = Entry(win_root , textvariable =uservalue )
-    passentry = Entry(win_root , textvariable =passvalue )
-
-    userentry.place(x=23, y = 28)
-    passentry.place(x=10,y=20)
-    # c1 = Button(, fg="red", text = "Submit"  ,font = " arial 10 bold", bg= "white" 
-
-    #        , command = opt)
-    # c1.pack(side = BOTTOM , padx = 20 , anchor = SE)
-    def opt():
+obj = wave.open('lemaster_tech.wav', 'wb')
+obj.setnchannels(CHANNELS)
+obj.setsampwidth(pa.get_sample_size(FORMAT))
+obj.setframerate(RATE)
+obj.writeframes(b''.join(frames))
+obj.close()
 
 
-        opt_root = Tk()
-        opt_root.geometry("500x400")
-        
-        print(uservalue.get())
-        print(passvalue.get())
+file = wave.open('lemaster_tech.wav', 'rb')
 
-        opt_root.mainloop()
-    b1=Frame(win_root, bg="white", borderwidth= 6 , relief= SUNKEN)
-    b1.pack(side=BOTTOM)
+sample_freq = file.getframerate()
+frames = file.getnframes()
+signal_wave = file.readframes(-1)
 
-    c1 = Button(b1, fg="red", text = "START"  ,font = " arial 10 bold", bg= "white" 
+file.close()
 
-     , command = opt)
-    c1.pack(side = BOTTOM , padx = 20 , anchor = SE) 
-    # Button(text = "Submit",command=opt).place(row=2, column=2)
-   
+time = frames / sample_freq
 
-    
+# if one channel use int16, if 2 use int32
+audio_array = np.frombuffer(signal_wave, dtype=np.int16)
 
-    win_root.mainloop()
-   
+times = np.linspace(0, time, num=frames)
 
-f3=Frame(root, bg="white", borderwidth= 6 , relief= SUNKEN)
-f3.pack(side=BOTTOM)
-
-b1 = Button(f3, fg="red", text = "START"  ,font = " arial 10 bold", bg= "white" 
-
-, command = win)
-b1.pack(side = BOTTOM , padx = 20 , anchor = SE)
-
-
-
-#Import image
-photo = PhotoImage(file="Images/logo.png")
-image = Label(image=photo)
-
-#Pack attributes
-# anchor = "Write direction in which text or image is to be alligned"
-# example- anchor = "ne"
-# example- anchor = "sw"
-# side = TOP , BOTTOM, LEFT, RIGHT
-# fill= X #filles in x axis
-# fill= Y #filles in y axis
-# 
-# padx
-# pady
-
-image.pack(side = TOP, fill = X , padx=34 , pady =56)
-
-
-# Label
-# Important label options
-# text =adds the text
-# bd =background
-# fg =foreground
-# font =sets the font
-# 2 ways-
-# 1)font= "arial 23 bold "
-# 2)font= ("arial",23, "bold"))
-#borderwidth = defines border width
-# padx= padding in x
-# pady= padding in y
-# relief = SUNKEN, RAISED, GROOVE , RIDGE [Types pf border]
-# Used for border styling 
-
-label=Label(text="SWARA", bg="green" , fg="blue", padx= 11,pady = 23,font= ("arial",23, "bold")# 1)font= "arial 23 bold "
-,borderwidth= 5, relief= SUNKEN)
-
-label.pack()
-
-
-root.mainloop()
+plt.figure(figsize=(15, 5))
+plt.plot(times, audio_array)
+plt.ylabel('Signal Wave')
+plt.xlabel('Time (s)')
+plt.xlim(0, time)
+plt.title('The Thing I Just Recorded!!')
+plt.show()
