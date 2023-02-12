@@ -1,25 +1,28 @@
 from tkinter import *
 from tkinter import ttk, filedialog
 import tkinter as tk
-from tkinter import filedialog
-from tkinter.filedialog import askopenfile
-
-# Canvas For imposing matplotlib graph with tkinter gui.
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg  
-
+# Canvas For imposing matplotlib graph with tkinter gui.
+from matplotlib.figure import Figure
+from tkinter.filedialog import askopenfile
 import os
-import Swara_Backend
+from tkinter import filedialog
+import matplotlib.pyplot as plt
+import pyaudio
+import wave
+import numpy as np
+
+
+#import matplotlib.pyplot as plt
+
 
 #Function for clearing Win
 def clearWin(window):
       for widgets in window.winfo_children():
           widgets.destroy()
 
-
 #---------------- File Input Win -------------------
 def fileWin():
-        global user_file_loc
-        global orgMusic_file_loc
         clearWin(win_root)
 
         #Fetching user and password for verification
@@ -43,38 +46,42 @@ def fileWin():
 
         #Function for taking File Input 
         def fileInput(b_x,b_y):
-                file = filedialog.askopenfile(mode='r', filetypes=[('Music Files', '*.wav')])
-                
+                global filePath
+                file = filedialog.askopenfile(mode='r', filetypes=[('Python Files', '*.py')])
                 if file:
                         filePath = os.path.abspath(file.name)
-                        path = filePath
                         file_loc_l = Label(win_root, text=str(filePath),font = "raleway 10 bold", bg="paleturquoise")
-                        file_loc_l.place(x = b_x, y = (b_y + 30))                        
-                        return path
+                        file_loc_l.place(x = b_x, y = (b_y + 30))
+                        filePath = str(filePath)
+                        
 
         #User File
         user_file_l = Label(win_root , text= "Your Music File :   " , bg="paleturquoise")
         user_file_l.place(x= 30 , y = 85)
-        user_file_loc = fileInput(120,85)
         user_file_but = Button(win_root , text= "Browse",command=lambda : fileInput(120,85))
         user_file_but.place(x=120, y = 85)
+        user_file_loc = filePath
+        
+ 
 
         #Original File
         org_music_l = Label(win_root , text= "Original File : " , bg="paleturquoise")  
         org_music_l.place(x = 30,y=140)
-        orgMusic_file_loc = fileInput(120,140)
         org_file_but = Button(win_root , text= "Browse",command=lambda : fileInput(120,140))
         org_file_but.place(x=120, y = 140)
+        orgMusic_file_loc = filePath
         
         #Process Button
         process_b = Button(win_root, fg="red", text = "Process"  ,font = "raleway 12 bold" , command=graphWin)
         process_b.place(x = 110, y = 210)
+
+        print(user_file_loc,orgMusic_file_loc,sep="\n")
         
+
 
 #---------------- Graph Input Win ------------------- #
 def graphWin():
-        global user_file_loc
-        global orgMusic_file_loc              
+                          
         clearWin(win_root)
         win_root.geometry("1400x600") 
         win_root.configure(bg="paleturquoise")
@@ -113,13 +120,137 @@ def graphWin():
         result_text.pack()               
 
 
+        #Python Backend Programming for file input and graph comparision.
+
+        FRAMES_PER_BUFFER = 3200
+        FORMAT = pyaudio.paInt16
+        CHANNELS = 1
+        RATE = 16000
+
+        audio = pyaudio.PyAudio()
+
+        record = audio.open(
+                format=FORMAT,
+                channels=CHANNELS,
+                rate=RATE,
+                input=True,
+                frames_per_buffer=FRAMES_PER_BUFFER
+        )
+
+        print("Welcome  to SWARA!")
+        print()
+        print("How can I help you!")
+        print()
+        print("Press 1 to start recording the song you want to compare.\nPress 2 to upload the song you want to compare.")
+        print()
+        user_choice= int(input("Enter your choice : "))
+        print()
+
+        if (user_choice==1):      
+                print('START RECORDING')
+                seconds = 8
+                frames = []
+                second_tracking = 0
+                second_count = 0
+                for i in range(0, int(RATE/FRAMES_PER_BUFFER*seconds)):
+                        data = record.read(FRAMES_PER_BUFFER)
+                        frames.append(data)
+                        second_tracking += 1
+
+                        if second_tracking == RATE/FRAMES_PER_BUFFER:
+                                second_count += 1
+                                second_tracking = 0
+                                print(f'Time Left: {seconds - second_count} seconds')
+
+
+                record.stop_stream()
+                record.close()
+                audio.terminate()
+
+                specimen = wave.open('user.wav', 'wb')
+                specimen.setnchannels(CHANNELS)
+                specimen.setsampwidth(audio.get_sample_size(FORMAT))
+                specimen.setframerate(RATE)
+                specimen.writeframes(b''.join(frames))
+                specimen.close()
+
+                file_spec = wave.open('user.wav', 'rb')
+                sample_freq = file_spec.getframerate()
+                frames = file_spec.getnframes()
+                signal_wave = file_spec.readframes(-1)
+                file_spec.close()
+
+        else:
+                #
+                print()
+                file_path1 = input('Enter Recorded file path: ')
+                file_spec = wave.open(file_path1, 'rb')
+                sample_freq = file_spec.getframerate()
+                frames = file_spec.getnframes()
+                signal_wave = file_spec.readframes(-1)
+    
+                file_spec.close()
+
+
+        time = frames / sample_freq
+
+        # if one channel use int16, if 2 use int32
+        arr = np.frombuffer(signal_wave, dtype=np.int16)
+        times = np.linspace(0, time, num=frames)
+
+        #ORIGINAL FILE EXPERIMENTAL CODE
+
+        #user input of original file
+        print()
+        file_path = input('Enter Original file path: ')
+        file_real = wave.open(file_path, 'rb')
+        sample_freq = file_real.getframerate()
+        frames = file_real.getnframes()
+        signal_wave = file_real.readframes(-1)
+
+        file_real.close()
+
+        time = frames / sample_freq
+
+        # if one channel use int16, if 2 use int32
+       
+        def plot_graph():
+               
+                arr2 = np.frombuffer(signal_wave, dtype=np.int16)
+                times2 = np.linspace(0, time, num=frames)
+                fig =  Figure(figsize=(15, 5))
+                # fig = Figure(figsize=(5, 4), dpi=100)
+                ax = fig.add_subplot(111)
+                ax.plot(times, arr , color = 'red')
+                ax.plot(times2,arr2, color = 'orange')
+                plt.ylabel('Sound Wave')
+                plt.xlabel('Time (s)')
+                plt.xlim(0, time)
+                plt.title('Graph of the specimen and original song')
+                # Compare pitch
+                signal1_pitch = np.mean(np.abs(np.diff(arr2)))
+                signal2_pitch = np.mean(np.abs(np.diff(times2)))
+
+                if signal1_pitch > signal2_pitch:
+                        result_text.config(text=result_text.cget("text") + "\nFile 1 has higher pitch.")
+                elif signal1_pitch < signal2_pitch:
+                        result_text.config(text=result_text.cget("text") + "\nFile 2 has higher pitch.")
+                else:
+                        result_text.config(text=result_text.cget("text") + "\nBoth files have the same pitch.")
+
+                return fig
+
+
+
+# ------------------------------------*---------------------------------- #
+
         # Creting the graph holding frame
         grpframe = tk.Frame(win_root , bg ="paleturquoise")
         grpframe.pack(side=tk.LEFT)
         
         
-        # Add the first graph to the first frame
-        fig1 = Swara_Backend.Backend(user_file_loc,orgMusic_file_loc,result_text)
+         # Add the first graph to the first frame
+        fig1 = plot_graph()
         canvas1 = FigureCanvasTkAgg(fig1, master=grpframe)
         canvas1.draw()
         canvas1.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
@@ -132,6 +263,7 @@ def graphWin():
         
 
 #-------------------- Login Win -------------------- #
+
 def loginWin():
     clearWin(win_root)
 
@@ -180,9 +312,8 @@ win_root.resizable(False,False)
 win_root.title("Swara")
 
 #Global Variables
-user_file_loc = ""
-orgMusic_file_loc = ""
 
+filePath = ""
 uservalue = StringVar()
 passvalue = StringVar()
 
@@ -198,12 +329,13 @@ wel_text.pack()
 
 #Import image
 
-sw_photo = PhotoImage(file="Images\logo.png")
+sw_photo = PhotoImage(file="D:/Coding/Python Programming/Swara source code/logo.png")
 sw_image = Label(image=sw_photo)
 sw_image.place(x = 230,y = 200,anchor="center")
 
 
 #Start Button
+
 start_b = Button(win_root, text = "START",font = " arial 20 bold", width = 10, height= 2, bd = 5 
                   ,fg="red" , command =  loginWin)
 start_b.place(x = 230,y = 380,anchor='center')
