@@ -1,127 +1,61 @@
-import matplotlib.pyplot as plt
-from matplotlib.figure import Figure
-import pyaudio
+import tkinter as tk
 import wave
+import matplotlib.pyplot as plt
 import numpy as np
-from tkinter import *
+from tkinter import filedialog
 
-#Python Backend Programming for file input and graph comparision.
-def Backend(user_p,org_p,text):
-    print(user_p,org_p) 
-    FRAMES_PER_BUFFER = 3200
-    FORMAT = pyaudio.paInt16
-    CHANNELS = 1
-    RATE = 16000
+def plot_audio_files(user_file, org_file):
+    # Load audio files
+    with wave.open(user_file, "rb") as wav_user_file:
+        user_X = wav_user_file.readframes(wav_user_file.getnframes())
+        user_sr = wav_user_file.getframerate()
 
-    audio = pyaudio.PyAudio()
+    with wave.open(org_file, "rb") as wav_org_file:
+        org_X = wav_org_file.readframes(wav_org_file.getnframes())
+        org_sr = wav_org_file.getframerate()
 
-    record = audio.open(
-        format=FORMAT,
-        channels=CHANNELS,
-        rate=RATE,
-        input=True,
-        frames_per_buffer=FRAMES_PER_BUFFER
-    )
+    # Convert audio files to numpy arrays
+    user_X = np.frombuffer(user_X, dtype=np.int16)
+    org_X = np.frombuffer(org_X, dtype=np.int16)
 
-    print("Welcome  to SWARA!")
-    print()
-    print("How can I help you!")
-    print()
-    print("Press 1 to start recording the song you want to compare.\nPress 2 to upload the song you want to compare.")
-    print()
-    #user_choice = int(input("Enter your choice : "))
-    print()
+    # Plot superimposed audio files
+    plt.figure(figsize=(15, 7))
+    plt.plot(user_X, label=user_file, color= "red", zorder = 0.4)
+    plt.plot(org_X, label=org_file , color = "orange", alpha = 0.8)
+    plt.xlim(0, len(user_X))
+    plt.legend()
+    plt.show()
 
-    # if (user_choice==1):      
-    #     print('START RECORDING')
-    #     seconds = 8
-    #     frames = []
-    #     second_tracking = 0
-    #     second_count = 0
-    #     for i in range(0, int(RATE/FRAMES_PER_BUFFER*seconds)):
-    #             data = record.read(FRAMES_PER_BUFFER)
-    #             frames.append(data)
-    #             second_tracking += 1
+def similarity_and_pitch(text, user_file, org_file):
+    # Load audio files
+    #User
+    with wave.open(user_file, "rb") as wav_user_file:
+        user_X = wav_user_file.readframes(wav_user_file.getnframes())
+        user_sr = wav_user_file.getframerate()
 
-    #             if second_tracking == RATE/FRAMES_PER_BUFFER:
-    #                     second_count += 1
-    #                     second_tracking = 0
-    #                     print(f'Time Left: {seconds - second_count} seconds')
-
-
-    #     record.stop_stream()
-    #     record.close()
-    #     audio.terminate()
-
-    #     specimen = wave.open('user.wav', 'wb')
-    #     specimen.setnchannels(CHANNELS)
-    #     specimen.setsampwidth(audio.get_sample_size(FORMAT))
-    #     specimen.setframerate(RATE)
-    #     specimen.writeframes(b''.join(frames))
-    #     specimen.close()
-
-    #     file_spec = wave.open('user.wav', 'rb')
-    #     sample_freq = file_spec.getframerate()
-    #     frames = file_spec.getnframes()
-    #     signal_wave = file_spec.readframes(-1)
-    #     file_spec.close()
-
-  
-    # print()
-    # file_path1 = input('Enter Recorded file path: ')
-    file_spec = wave.open(user_p, 'rb')
-    sample_freq = file_spec.getframerate()
-    frames = file_spec.getnframes()
-    signal_wave = file_spec.readframes(-1)
-
-    file_spec.close()
-
-    time = frames / sample_freq
-
-    # User File Graph
-    user_arr = np.frombuffer(signal_wave, dtype=np.int16)
-    user_times = np.linspace(0, time, num=frames)
-
-    #ORIGINAL FILE EXPERIMENTAL CODE
-
-    #user input of original file
-    # file_path = input('Enter Original file path: ')
-    file_real = wave.open(org_p, 'rb')
-    sample_freq = file_real.getframerate()
-    frames = file_real.getnframes()
-    signal_wave = file_real.readframes(-1)
-
-    file_real.close()
-
-    time = frames / sample_freq
-
-    # if one channel use int16, if 2 use int32
-    org_arr = np.frombuffer(signal_wave, dtype=np.int16)
-    org_times = np.linspace(0, time, num=frames)
-
-    # --------- Plotting Graph ----------
-    fig =  Figure(figsize=(15, 5))
-    ax = fig.add_subplot(111)
-
-    ax.plot(user_times, user_arr , color = 'red')
-    ax.plot(org_times,org_arr, color = 'orange')
-
-    plt.ylabel('Sound Wave')
-    plt.xlabel('Time (s)')
-    plt.xlim(0, time)
-    plt.title('Graph of the specimen and original song')
+    with wave.open(org_file, "rb") as wav_org_file:
+        org_X = wav_org_file.readframes(wav_org_file.getnframes())
+        org_sr = wav_org_file.getframerate()
     
-    # Compare pitch
-    org_pitch = np.mean(np.abs(np.diff(org_arr)))
-    user_pitch = np.mean(np.abs(np.diff(org_times)))
+    # Convert audio files to numpy arrays
+    user_X = np.frombuffer(user_X, dtype=np.int16)
+    org_X = np.frombuffer(org_X, dtype=np.int16)
+    # Compare pitches
 
-    if org_pitch > user_pitch:
-        text.config(text=text.cget("text") + "\nFile 1 has higher pitch.")
-    
-    elif org_pitch < user_pitch:
-        text.config(text=text.cget("text") + "\nFile 2 has higher pitch.")
-    
+    # Compare pitches
+    if np.mean(user_X) > np.mean(org_X):
+        pitch_comparison = 'Signal 1 has  higher pitch.'
+    elif np.mean(user_X) < np.mean(org_X):
+        pitch_comparison = 'Signal 2 has higher pitch.'
     else:
-        text.config(text=text.cget("text") + "\nBoth files have the same pitch.")
+        pitch_comparison = 'The signals have the same pitch'
 
-    return fig
+    # Calculate similarity percentage
+    similarity = np.corrcoef(user_X, org_X)[0, 1] * 100
+    similarity = round(similarity, 2)
+
+    # Display results
+    # text.config(text=f"Pitch Comparison: {pitch_comparison}\nSimilarity: {similarity}%")
+    text.config(text=f"Pitch Comparison: {pitch_comparison}")
+    
+
