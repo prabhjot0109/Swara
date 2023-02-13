@@ -27,8 +27,8 @@ def plot_audio_files(user_file, org_file):
     fig =  Figure(figsize=(20, 20))
     # plt.figure(figsize=(15, 7))
     ax = fig.add_subplot(111) 
-    ax.plot(user_X, label=user_file, color= "red" ,alpha =  0.6) #purple  red 
-    ax.plot(org_X, label=org_file , color = "green",alpha=0.7 ) #zorder = 0.8 #orange green
+    ax.plot(user_X, label=user_file, color= "purple" ,alpha =  0.7) #purple  red 
+    ax.plot(org_X, label=org_file , color = "red",alpha=0.6 ) #zorder = 0.8 #orange green
     plt.xlim(0, len(user_X))
     plt.title('Graph of the specimen and original song')
     return fig
