@@ -3,10 +3,8 @@ from tkinter import ttk, filedialog
 import tkinter as tk
 from tkinter import filedialog
 from tkinter.filedialog import askopenfile
-
 # Canvas For imposing matplotlib graph with tkinter gui.
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg  
-
 import os
 import Swara_Backend
 
@@ -53,7 +51,8 @@ def loginWin():
     c_user_b.place(x = 30, y = 130)
 
 
-#---------------- File Input Win -------------------
+#---------------- File Input Win -------------------#
+
 def fileWin():
         global user_file_loc
         global orgMusic_file_loc
@@ -63,7 +62,7 @@ def fileWin():
         pswd = passvalue.get()
         user = uservalue.get()
 
-        win_root.geometry("400x270")
+        win_root.geometry("550x270")
 
         #File Header Frame
         file_h_fr=Frame(win_root, bg ="paleturquoise" )
@@ -76,9 +75,9 @@ def fileWin():
         #Instruction Text
         inst_l = Label(win_root,text="Input your recorded music file and Original Music File Here.",
                         bg="paleturquoise" , fg = "Red", font = ("Posterama  10 bold") )
-        inst_l.place(x = 10,y = 50)
+        inst_l.place(x = 30,y = 50)
 
-        #Function for taking File Input 
+        #  Function for taking File Input 
         def fileInput(b_x,b_y):
                 file = filedialog.askopenfile(mode='r', filetypes=[('Music Files', '*.wav')])
                 
@@ -89,7 +88,7 @@ def fileWin():
                         file_loc_l.place(x = b_x, y = (b_y + 30))                        
                         return path
 
-        #User File
+        # #User File
         user_file_l = Label(win_root , text= "Your Music File :   " , bg="paleturquoise")
         user_file_l.place(x= 30 , y = 85)
         user_file_but = Button(win_root , text= "Browse",command=lambda : fileInput(120,85))
@@ -102,15 +101,16 @@ def fileWin():
         org_file_but = Button(win_root , text= "Browse",command=lambda : fileInput(120,140))
         orgMusic_file_loc = fileInput(120,140)
         org_file_but.place(x=120, y = 140)
+
         
         # Plot and Compare button
         plot_and_compare_button = tk.Button(win_root, text="Plot and Compare",
         command=graphWin)
 
-        plot_and_compare_button.place(x=120, y = 200)
+        plot_and_compare_button.place(x=180, y = 220)
         
 
-#---------------- Graph Input Win ------------------- #
+#---------------- Graph Input Win -------------------#
 def graphWin():
         global user_file_loc
         global orgMusic_file_loc              
@@ -176,7 +176,7 @@ def ackWin():
 
 #Window Properties
 win_root = Tk() 
-win_root.geometry("450x460")
+win_root.geometry("450x440")
 win_root.configure(bg="paleturquoise")
 win_root.resizable(False,False)
 win_root.title("Swara")
