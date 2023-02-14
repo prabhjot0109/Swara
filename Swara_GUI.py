@@ -1,6 +1,5 @@
 from tkinter import *
-from tkinter import ttk, filedialog
-import tkinter as tk
+from tkinter import messagebox
 from tkinter import filedialog
 from tkinter.filedialog import askopenfile
 
@@ -94,33 +93,29 @@ def loginWin():
         user = Label(win_root , text= "Username ID  :   ", bg="paleturquoise")
         user.place(x= 30 , y = 58)
 
-        loginWin.userEntry = Entry(win_root , textvariable =uservalue )
-        loginWin.userEntry.place(x=120, y = 58)
+        userEntry = Entry(win_root , textvariable =uservalue )
+        userEntry.place(x=120, y = 58)
 
         #Password
         password = Label(win_root , text= "Password : ", bg="paleturquoise")  
         password.place(x = 30,y=80)
 
-        loginWin.passEntry = Entry(win_root , textvariable = passvalue)
-        loginWin.passEntry.place(x=120 ,y = 80)
+        passEntry = Entry(win_root , textvariable = passvalue, show = "*")
+        passEntry.place(x=120 ,y = 80)
         
         #Login Button
-        log_b = Button(win_root, fg="red", text = "Login"  ,font = "raleway 12 bold", command = chooseWin)
+        log_b = Button(win_root, fg="red", text = "Login"  ,font = "raleway 12 bold", command = lambda: Swara_Database.database(userEntry,passEntry,chooseWin))
         log_b.place(x = 170, y = 130)
-        # lambda: Swara_Database.database(current_user,current_pass,chooseWin
 
         #Create User Button
-        c_user_b = Button(win_root, fg = "red", text = "Sign - Up", font = " raleway 12 bold" )
+        c_user_b = Button(win_root, fg = "red", text = "Sign - Up", font = " raleway 12 bold" ,command= createUserWin)
         c_user_b.place(x = 30, y = 130)
-
+        
+def createUserWin():
+        messagebox.showinfo("Work In Progress","This Section Of program is still a Work in Progress")
         
 #-----------------Choose option window---------------#
 def chooseWin():
-        current_user = loginWin.userEntry.get()
-        current_pass = loginWin.passEntry.get()
-
-        print(current_user,"test",current_pass)
-
         clearWin(win_root)
         win_root.geometry("280x200")
 
@@ -170,7 +165,7 @@ def recordWin():
         sec_l = Button(win_root, text ="Seconds" ,font = " arial 15 bold", width = 16, height= 2
                   ,fg="red" , relief = RAISED )
         sec_l.place(x= 160 , y= 200)
-        sec_e = tk.Entry(win_root,font = " arial 15 bold", width = 16)
+        sec_e = Entry(win_root,font = " arial 15 bold", width = 16)
         sec_e.place(x= 200 , y= 200)
         
 
@@ -192,9 +187,9 @@ def fileWin():
         global orgMusic_file_loc
         clearWin(win_root)
 
-        #Fetching user and password for verification
-        pswd = passvalue.get()
-        user = uservalue.get()
+        # Fetching user and password for verification
+        # pswd = passvalue.get()
+        # user = uservalue.get()
 
         win_root.geometry("500x270")
 
@@ -227,26 +222,27 @@ def fileWin():
 
         
         # Plot and Compare button
-        plot_and_compare_button = tk.Button(win_root, text="Plot and Compare",command=graphWin)
+        plot_and_compare_button = Button(win_root, text="Plot and Compare",command=graphWin)
         plot_and_compare_button.place(x=120, y = 220)
         
 
 #---------------- Graph Input Win ------------------- #
 def graphWin():
+
         global user_file_loc
         global orgMusic_file_loc              
+        
+        #Configuring Main Window
         clearWin(win_root)
         win_root.geometry("1400x700") 
         win_root.configure(bg="paleturquoise")
         win_root.title("Graph Input")
 
         #Graph Window Header Frame
-
         grp_h_fr=Frame(win_root, bg="paleturquoise" )
         grp_h_fr.pack(side=TOP, fill = X)
 
         # Label for graph Window
-         
         grp_text=Label(grp_h_fr, text="GRAPH" , bg="paleturquoise" , fg = "red", font= ("Posterama  40"))
         grp_text.pack()
         
@@ -255,9 +251,8 @@ def graphWin():
 
 
         # Creating the graph holding frame
-
         grpframe = Frame(win_root , bg ="paleturquoise")
-        grpframe.pack(side=tk.LEFT)
+        grpframe.pack(side=LEFT)
         
         #Code execution and selection.
         try:    
@@ -268,14 +263,16 @@ def graphWin():
                 fig = Swara_Backend.plot_audio_files(user_file_loc,orgMusic_file_loc) 
 
 
+        #Placing Graph in Tkinter GUI Window
         canvas = FigureCanvasTkAgg( fig, master=grpframe)
         canvas.draw()
-        canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=2)
+        canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=2)
                
-        # Creating close button    
+        # Creating Close Button    
         log_b = Button(win_root, fg="red", text = "CLOSE"  ,font = "raleway 12 bold", command = ackWin)
         log_b.place(x=680, y=660)
 
+# ---------------------- Acknowledgement Window ----------------------------------
 def ackWin():
         clearWin(win_root)
         win_root.geometry("400x300")
@@ -286,14 +283,10 @@ def ackWin():
         ack_h_fr.pack( fill=X)
         
 
-        # Label for Acknowledgement Window
-        ack_text = Label(ack_h_fr, text="""Thank You!!!
-
-
-
-
-For using our software.""" , bg="paleturquoise", fg="red", font=("Posterama  20") , pady =60)
-        ack_text.pack()
+        # Thank You Label for Acknowledgement Window
+        thanks_l = Label(ack_h_fr, text="Thank You!!!\n\n\nFor using our software." , 
+                         bg="paleturquoise", fg="red", font=("Posterama  20") , pady =60)
+        thanks_l.pack()
                 
 # --------------- Main Window --------------------- #
 
