@@ -1,10 +1,6 @@
-import tkinter as tk
 import wave
 import matplotlib.pyplot as plt
 import numpy as np
-from tkinter import filedialog
-from matplotlib.backends.backend_tkagg import (
-    FigureCanvasTkAgg, NavigationToolbar2Tk)
 from matplotlib.figure import Figure
 
 #Function For plotting Audio Graphs 
@@ -12,14 +8,14 @@ def plot_audio_files(user_file, org_file):
 
     # Load audio files
     with wave.open(user_file, "rb") as wav_user_file:
-        user_X = wav_user_file.readframes(wav_user_file.getnframes())
         user_sr = wav_user_file.getframerate()
+        user_X = wav_user_file.readframes(user_sr)
+        
 
     with wave.open(org_file, "rb") as wav_org_file:
-        org_X = wav_org_file.readframes(wav_org_file.getnframes())
         org_sr = wav_org_file.getframerate()
-    
- 
+        org_X = wav_org_file.readframes(org_sr)
+        
     # Convert audio files to numpy arrays
     user_X = np.frombuffer(user_X, dtype=np.int16)
     org_X = np.frombuffer(org_X, dtype=np.int16)
