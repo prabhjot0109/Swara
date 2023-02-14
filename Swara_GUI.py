@@ -1,16 +1,18 @@
+#Libraries for GUI
 from tkinter import *
 from tkinter import messagebox
 from tkinter import filedialog
-from tkinter.filedialog import askopenfile
 
 # Canvas For imposing matplotlib graph with tkinter gui.
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg  
 import pyaudio
 import wave
 import os
+
+#Importing Custom Files
 import Swara_Backend
 import Swara_Database
-import numpy as np
+
 
 #Function for clearing Win
 def clearWin(window):
@@ -76,7 +78,6 @@ def recording(sec_e):
 
 
 #-------------------- Login Win -------------------- #
-
 def loginWin():
         clearWin(win_root)
 
@@ -299,7 +300,6 @@ win_root.title("Swara")
 #Global Variables
 user_file_loc = ""
 orgMusic_file_loc = ""
-
 
 uservalue = StringVar()
 passvalue = StringVar()
