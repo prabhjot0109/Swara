@@ -45,9 +45,10 @@ def recording(sec_e):
                 input=True,
                 frames_per_buffer=FRAMES_PER_BUFFER
         )
-         
+          
+        # Creates a label when recording completes.
         ch2 = Label(win_root , text= "Your voice is Recorded!" , bg="paleturquoise" ,font= ("Posterama  16 bold"))
-        ch2.place(x= 150 , y = 180)
+        ch2.place(x= 140 , y = 220)
 
         seconds = float(sec)
         frames = []
@@ -86,7 +87,7 @@ def loginWin():
         login_h_fr.pack(side=TOP, fill = X)
 
         #Login Label
-        login_text=Label(login_h_fr, text="LOGIN" ,bg="paleturquoise", fg = "red", font= ("Posterama  20 bold"), padx = 200)
+        login_text=Label(login_h_fr, text="LOGIN" ,bg="paleturquoise", fg = "red", font= ("Posterama  20 bold"), padx = 200 , pady = 10)
         login_text.pack()
 
         #User
@@ -104,15 +105,15 @@ def loginWin():
         passEntry.place(x=120 ,y = 80)
         
         #Login Button
-        log_b = Button(win_root, fg="red", text = "Login"  ,font = "raleway 12 bold", command = lambda: Swara_Database.database(userEntry,passEntry,chooseWin))
-        log_b.place(x = 170, y = 130)
+        log_b = Button(win_root, fg="red", text = "Login"  ,font = "raleway 12 bold", command = lambda: Swara_Database.database(userEntry,passEntry,chooseWin)) #Checks and verify the login details
+        log_b.place(x = 160, y = 130)
 
         #Create User Button
         c_user_b = Button(win_root, fg = "red", text = "Sign - Up", font = " raleway 12 bold" ,command= createUserWin)
         c_user_b.place(x = 30, y = 130)
         
 def createUserWin():
-        messagebox.showinfo("Work In Progress","This Section Of program is still a Work in Progress")
+        messagebox.showinfo("Work In Progress","This Section Of Program is Work in Progress")
         
 #-----------------Choose option window---------------#
 def chooseWin():
@@ -129,14 +130,13 @@ def chooseWin():
         
         #Command Button
         rec_b = Button(win_root, fg="red", text = "Record Audio"  ,font = "raleway 12 bold", command = recordWin )
-        rec_b.place(x = 150, y = 130)
+        rec_b.place(x = 140, y = 130)
 
         #Create User Button
         up_b = Button(win_root, fg = "red", text = "Upload File", font = " raleway 12 bold" , command = fileWin)
         up_b.place(x = 20, y = 130)
 
 #-----------------Record audio window---------------#
-
 def recordWin():
         global orgMusic_file_loc
         global user_file_loc
@@ -151,33 +151,34 @@ def recordWin():
         ch_h_fr.pack(side=TOP, fill = X)
          
         #Command Label
-        ch_text=Label(ch_h_fr, text="Record Audio" ,bg="paleturquoise", fg = "red", font= ("Posterama  25 bold"), padx = 200 , pady= 20)
+        ch_text=Label(ch_h_fr, text="Record Audio" ,bg="paleturquoise", fg = "red", font= ("Posterama  25 bold"), padx = 200 , pady= 10)
         ch_text.pack()
 
-        #Original File
+        # Original File upload label
         org_music_l = Label(win_root , text= "Original File : " , bg="paleturquoise",  font= ("Posterama  12 bold"))
-        org_music_l.place(x= 30 , y= 80)
-        orgMusic_file_loc = fileInput(20,90)
+        org_music_l.place(x= 35 , y= 80)
+        orgMusic_file_loc = fileInput(20,80)
         org_file_but = Button(win_root , text= "Browse",command=lambda : fileInput(120,140))
-        org_file_but.place(x= 160 , y= 80)
+        org_file_but.place(x= 165 , y= 80)
+        
+        #Interval input label
+        interval_l = Label(win_root , text= "Enter recording interval : \n(in Seconds)  " , bg="paleturquoise",  font= ("Posterama  12 bold"))
+        interval_l.place(x= 35 , y= 150)
 
-        # Next button
-        sec_l = Button(win_root, text ="Seconds" ,font = " arial 15 bold", width = 16, height= 2
-                  ,fg="red" , relief = RAISED )
-        sec_l.place(x= 160 , y= 200)
-        sec_e = Entry(win_root,font = " arial 15 bold", width = 16)
-        sec_e.place(x= 200 , y= 200)
+        # Interval input entry box
+        sec_e = Entry(win_root,font = "Posterama 15 bold", width = 10)
+        sec_e.place(x= 260 , y= 150)
         
 
-        # Plot and Compare button
+        # Record Audio button
         record_button = Button(win_root, text="Record Audio", command= lambda : recording(sec_e) , font = " arial 15 bold", width = 14, height= 2,
                   relief = RAISED,fg="red" ) 
-        record_button.place(x=170 , y=230)
+        record_button.place(x=170 , y=260)
 
-        # Next button
+        # Plot and compare button
         next_button = Button(win_root, text ="Plot and Compare", command=graphWin ,font = " arial 15 bold", width = 16, height= 2
                   ,fg="red" , relief = RAISED )
-        next_button.place(x= 160 , y= 340)
+        next_button.place(x= 160 , y= 350)
         
 
 #---------------- File Input Win -------------------
@@ -187,10 +188,6 @@ def fileWin():
         global orgMusic_file_loc
         clearWin(win_root)
 
-        # Fetching user and password for verification
-        # pswd = passvalue.get()
-        # user = uservalue.get()
-
         win_root.geometry("500x270")
 
         #File Header Frame
@@ -198,27 +195,28 @@ def fileWin():
         file_h_fr.pack(side=TOP, fill = X)
 
         #Header Text
-        file_h_text=Label(file_h_fr, text="File Input" ,bg="paleturquoise", fg = "red", font= ("Posterama  20 bold"), padx = 200)
+        file_h_text=Label(file_h_fr, text="File Input" ,bg="paleturquoise", fg = "red",
+                          font= ("Posterama  20 bold"), padx = 200 , pady = 10)
         file_h_text.pack()
 
         #Instruction Text
         inst_l = Label(win_root,text="Input your recorded music file and Original Music File Here.",
                         bg="paleturquoise" , fg = "Red", font = ("Posterama  10 bold") )
-        inst_l.place(x = 10,y = 50)
+        inst_l.place(x = 50,y = 50)
 
         #User File
-        user_file_l = Label(win_root , text= "Your Music File :   " , bg="paleturquoise")
+        user_file_l = Label(win_root , text= "Recorded File :   " , bg="paleturquoise")
         user_file_l.place(x= 30 , y = 85)
-        user_file_but = Button(win_root , text= "Browse",command=lambda : fileInput(120,85))
-        user_file_loc = fileInput(120,85)
-        user_file_but.place(x=120, y = 85)
+        user_file_but = Button(win_root , text= "Browse",command=lambda : fileInput(30,85))
+        user_file_loc = fileInput(30,85)
+        user_file_but.place(x=140, y = 85)
 
         #Original File
         org_music_l = Label(win_root , text= "Original File : " , bg="paleturquoise")  
         org_music_l.place(x = 30,y=140)
-        org_file_but = Button(win_root , text= "Browse",command=lambda : fileInput(120,140))
-        orgMusic_file_loc = fileInput(120,140)
-        org_file_but.place(x=120, y = 140)
+        org_file_but = Button(win_root , text= "Browse",command=lambda : fileInput(30,140))
+        orgMusic_file_loc = fileInput(30,140)
+        org_file_but.place(x=140, y = 140)
 
         
         # Plot and Compare button
@@ -228,7 +226,6 @@ def fileWin():
 
 #---------------- Graph Input Win ------------------- #
 def graphWin():
-
         global user_file_loc
         global orgMusic_file_loc              
         
@@ -243,7 +240,7 @@ def graphWin():
         grp_h_fr.pack(side=TOP, fill = X)
 
         # Label for graph Window
-        grp_text=Label(grp_h_fr, text="GRAPH" , bg="paleturquoise" , fg = "red", font= ("Posterama  40"))
+        grp_text=Label(grp_h_fr, text="GRAPH" , bg="paleturquoise" , fg = "red", font= ("Posterama  40"), pady= 10)
         grp_text.pack()
         
         result_text = Label(win_root, text="" , bg="paleturquoise" ,fg = "green",  font= ("Posterama  20"))
@@ -263,7 +260,7 @@ def graphWin():
                 fig = Swara_Backend.plot_audio_files(user_file_loc,orgMusic_file_loc) 
 
 
-        #Placing Graph in Tkinter GUI Window
+        #Placing Graph in Tkinter GUI Window using canvas
         canvas = FigureCanvasTkAgg( fig, master=grpframe)
         canvas.draw()
         canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=2)
@@ -310,7 +307,7 @@ wel_fr=Frame(win_root, bg="paleturquoise" )
 wel_fr.pack(side=TOP, fill = X)
 
 #Welcome Label
-wel_text=Label(wel_fr, bg = "paleturquoise" , text="SWARA", fg = "red", font= ("Posterama  40 bold"), padx = 200)
+wel_text=Label(wel_fr, bg = "paleturquoise" , text="SWARA", fg = "red", font= ("Posterama  40 bold"), padx = 200 , pady=10)
 wel_text.pack()
 
 #Import image
