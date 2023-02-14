@@ -3,12 +3,14 @@ from tkinter import ttk, filedialog
 import tkinter as tk
 from tkinter import filedialog
 from tkinter.filedialog import askopenfile
+
 # Canvas For imposing matplotlib graph with tkinter gui.
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg  
 import pyaudio
 import wave
 import os
 import Swara_Backend
+import Swara_Database
 import numpy as np
 
 #Function for clearing Win
@@ -16,7 +18,7 @@ def clearWin(window):
       for widgets in window.winfo_children():
           widgets.destroy()
 
- #Function for taking File Input 
+#Function for taking File Input 
 def fileInput(b_x,b_y):
         file = filedialog.askopenfile(mode='r', filetypes=[('Music Files', '*.wav')])
         
@@ -28,7 +30,8 @@ def fileInput(b_x,b_y):
                 return path
         
 #Function for Recording Audio
-def recording():
+def recording(sec_e):
+        sec = sec_e.get()
         FRAMES_PER_BUFFER = 3200
         FORMAT = pyaudio.paInt16
         CHANNELS = 1
@@ -43,15 +46,11 @@ def recording():
                 input=True,
                 frames_per_buffer=FRAMES_PER_BUFFER
         )
-      
-        #chl = Label(win_root , text= "Welcome  to SWARA!" , bg="paleturquoise")
-        #chl.place(x= 30 , y = 150)
          
         ch2 = Label(win_root , text= "Your voice is Recorded!" , bg="paleturquoise" ,font= ("Posterama  16 bold"))
         ch2.place(x= 150 , y = 180)
 
-        # sec_str = str(sec)
-        seconds = 8
+        seconds = float(sec)
         frames = []
         second_tracking = 0
         second_count = 0
@@ -63,13 +62,12 @@ def recording():
                 second_tracking += 1
                 second_count += 1
 
-        
-        second_tracking = 0
+
         record.stop_stream()
         record.close()
         audio.terminate()
 
-        specimen = wave.open('user.wav', 'wb')
+        specimen = wave.open('Audio/user.wav', 'wb')
         specimen.setnchannels(CHANNELS)
         specimen.setsampwidth(audio.get_sample_size(FORMAT))
         specimen.setframerate(RATE)
@@ -80,45 +78,49 @@ def recording():
 #-------------------- Login Win -------------------- #
 
 def loginWin():
-    clearWin(win_root)
+        clearWin(win_root)
 
-    win_root.geometry("260x200")
+        win_root.geometry("260x200")
 
-    #Login Win Header Frame
-    login_h_fr=Frame(win_root, bg="paleturquoise" )
-    login_h_fr.pack(side=TOP, fill = X)
+        #Login Win Header Frame
+        login_h_fr=Frame(win_root, bg="paleturquoise" )
+        login_h_fr.pack(side=TOP, fill = X)
 
-    #Login Label
-    login_text=Label(login_h_fr, text="LOGIN" ,bg="paleturquoise", fg = "red", font= ("Posterama  20 bold"), padx = 200)
-    login_text.pack()
-    
+        #Login Label
+        login_text=Label(login_h_fr, text="LOGIN" ,bg="paleturquoise", fg = "red", font= ("Posterama  20 bold"), padx = 200)
+        login_text.pack()
 
-    #User
-    user = Label(win_root , text= "Username ID  :   ", bg="paleturquoise")
-    user.place(x= 30 , y = 58)
+        #User
+        user = Label(win_root , text= "Username ID  :   ", bg="paleturquoise")
+        user.place(x= 30 , y = 58)
 
-    userentry = Entry(win_root , textvariable =uservalue )
-    userentry.place(x=120, y = 58)
+        loginWin.userEntry = Entry(win_root , textvariable =uservalue )
+        loginWin.userEntry.place(x=120, y = 58)
 
-    #Password
-    password = Label(win_root , text= "Password : ", bg="paleturquoise")  
-    password.place(x = 30,y=80)
+        #Password
+        password = Label(win_root , text= "Password : ", bg="paleturquoise")  
+        password.place(x = 30,y=80)
 
-    passentry = Entry(win_root , textvariable = passvalue)
-    passentry.place(x=120 ,y = 80)
-    
-    #Login Button
-    log_b = Button(win_root, fg="red", text = "Login"  ,font = "raleway 12 bold", command = chWin)
-    log_b.place(x = 170, y = 130)
+        loginWin.passEntry = Entry(win_root , textvariable = passvalue)
+        loginWin.passEntry.place(x=120 ,y = 80)
+        
+        #Login Button
+        log_b = Button(win_root, fg="red", text = "Login"  ,font = "raleway 12 bold", command = chooseWin)
+        log_b.place(x = 170, y = 130)
+        # lambda: Swara_Database.database(current_user,current_pass,chooseWin
 
-    #Create User Button
-    c_user_b = Button(win_root, fg = "red", text = "Sign - Up", font = " raleway 12 bold" )
-    c_user_b.place(x = 30, y = 130)
+        #Create User Button
+        c_user_b = Button(win_root, fg = "red", text = "Sign - Up", font = " raleway 12 bold" )
+        c_user_b.place(x = 30, y = 130)
 
-
+        
 #-----------------Choose option window---------------#
+def chooseWin():
+        current_user = loginWin.userEntry.get()
+        current_pass = loginWin.passEntry.get()
 
-def chWin():
+        print(current_user,"test",current_pass)
+
         clearWin(win_root)
         win_root.geometry("280x200")
 
@@ -131,24 +133,21 @@ def chWin():
         ch_text.pack()
         
         #Command Button
-        rec_b = Button(win_root, fg="red", text = "Record Audio"  ,font = "raleway 12 bold", command = recWin )
+        rec_b = Button(win_root, fg="red", text = "Record Audio"  ,font = "raleway 12 bold", command = recordWin )
         rec_b.place(x = 150, y = 130)
 
         #Create User Button
         up_b = Button(win_root, fg = "red", text = "Upload File", font = " raleway 12 bold" , command = fileWin)
         up_b.place(x = 20, y = 130)
 
-
-
 #-----------------Record audio window---------------#
 
-def recWin():
+def recordWin():
         global orgMusic_file_loc
         global user_file_loc
 
         user_file_loc = "Audio/user.wav"
 
-        seconds = StringVar()
         clearWin(win_root)
         win_root.geometry("520x450")
 
@@ -156,11 +155,9 @@ def recWin():
         ch_h_fr=Frame(win_root, bg="paleturquoise" )
         ch_h_fr.pack(side=TOP, fill = X)
          
-         
         #Command Label
         ch_text=Label(ch_h_fr, text="Record Audio" ,bg="paleturquoise", fg = "red", font= ("Posterama  25 bold"), padx = 200 , pady= 20)
         ch_text.pack()
-
 
         #Original File
         org_music_l = Label(win_root , text= "Original File : " , bg="paleturquoise",  font= ("Posterama  12 bold"))
@@ -169,15 +166,21 @@ def recWin():
         org_file_but = Button(win_root , text= "Browse",command=lambda : fileInput(120,140))
         org_file_but.place(x= 160 , y= 80)
 
-        sec = seconds.get()
+        # Next button
+        sec_l = Button(win_root, text ="Seconds" ,font = " arial 15 bold", width = 16, height= 2
+                  ,fg="red" , relief = RAISED )
+        sec_l.place(x= 160 , y= 200)
+        sec_e = tk.Entry(win_root,font = " arial 15 bold", width = 16)
+        sec_e.place(x= 200 , y= 200)
+        
 
         # Plot and Compare button
-        record_button = tk.Button(win_root, text="Record Audio", command= recording , font = " arial 15 bold", width = 14, height= 2,
+        record_button = Button(win_root, text="Record Audio", command= lambda : recording(sec_e) , font = " arial 15 bold", width = 14, height= 2,
                   relief = RAISED,fg="red" ) 
         record_button.place(x=170 , y=230)
 
         # Next button
-        next_button = tk.Button(win_root, text ="Plot and Compare", command=graphWin ,font = " arial 15 bold", width = 16, height= 2
+        next_button = Button(win_root, text ="Plot and Compare", command=graphWin ,font = " arial 15 bold", width = 16, height= 2
                   ,fg="red" , relief = RAISED )
         next_button.place(x= 160 , y= 340)
         
@@ -247,13 +250,13 @@ def graphWin():
         grp_text=Label(grp_h_fr, text="GRAPH" , bg="paleturquoise" , fg = "red", font= ("Posterama  40"))
         grp_text.pack()
         
-        result_text = tk.Label(win_root, text="" , bg="paleturquoise" ,fg = "green",  font= ("Posterama  20"))
+        result_text = Label(win_root, text="" , bg="paleturquoise" ,fg = "green",  font= ("Posterama  20"))
         result_text.pack()               
 
 
         # Creating the graph holding frame
 
-        grpframe = tk.Frame(win_root , bg ="paleturquoise")
+        grpframe = Frame(win_root , bg ="paleturquoise")
         grpframe.pack(side=tk.LEFT)
         
         #Code execution and selection.
@@ -274,25 +277,23 @@ def graphWin():
         log_b.place(x=680, y=660)
 
 def ackWin():
-                clearWin(win_root)
-                win_root.geometry("400x300")
-                win_root.title("Acknowledgement")
+        clearWin(win_root)
+        win_root.geometry("400x300")
+        win_root.title("Acknowledgement")
 
-                # Graph Window Header Frame
+        # Graph Window Header Frame
+        ack_h_fr = Frame(win_root, bg="paleturquoise")
+        ack_h_fr.pack( fill=X)
+        
 
-                ack_h_fr = Frame(win_root, bg="paleturquoise")
-                ack_h_fr.pack( fill=X)
-                
-
-                # Label for Acknowledgement Window
-                
-                ack_text = Label(ack_h_fr, text="""Thank You!!!
+        # Label for Acknowledgement Window
+        ack_text = Label(ack_h_fr, text="""Thank You!!!
 
 
 
 
 For using our software.""" , bg="paleturquoise", fg="red", font=("Posterama  20") , pady =60)
-                ack_text.pack()
+        ack_text.pack()
                 
 # --------------- Main Window --------------------- #
 
@@ -306,6 +307,7 @@ win_root.title("Swara")
 #Global Variables
 user_file_loc = ""
 orgMusic_file_loc = ""
+
 
 uservalue = StringVar()
 passvalue = StringVar()
