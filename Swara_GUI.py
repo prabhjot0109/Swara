@@ -183,7 +183,6 @@ def recordWin():
         
 
 #---------------- File Input Win -------------------
-
 def fileWin():
         global user_file_loc
         global orgMusic_file_loc
@@ -280,6 +279,8 @@ def ackWin():
         ack_h_fr = Frame(win_root, bg="paleturquoise")
         ack_h_fr.pack( fill=X)
         
+        
+        messagebox.showinfo("Work In progress","This Program is still under development.")
 
         # Thank You Label for Acknowledgement Window
         thanks_l = Label(ack_h_fr, text="Thank You!!!\n\n\nFor using our software." , 
@@ -288,7 +289,6 @@ def ackWin():
                 
 # --------------- Main Window --------------------- #
 
-messagebox.showinfo("Work In progress","This Program is still under development.")
 
 #Window Properties
 win_root = Tk() 
