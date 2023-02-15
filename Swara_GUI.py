@@ -237,7 +237,7 @@ def graphWin():
         
         #Configuring Main Window
         clearWin(win_root)
-        win_root.geometry("1400x700") 
+        win_root.geometry("1500x700") 
         win_root.configure(bg="paleturquoise")
         win_root.title("Graph Input")
 
@@ -274,7 +274,7 @@ def graphWin():
                
         # Creating Close Button    
         log_b = Button(win_root, fg="red", text = "CLOSE"  ,font = "raleway 12 bold", command = ackWin)
-        log_b.place(x=680, y=660)
+        log_b.place(x=860, y=660)
 
 # ---------------------- Acknowledgement Window ----------------------------------
 def ackWin():

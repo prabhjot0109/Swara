@@ -28,12 +28,15 @@ def plot_audio_files(user_file, org_file):
     org_X = np.frombuffer(org_X, dtype=np.int16)
 
     # Plotting Graph
-    fig =  Figure(figsize=(20, 20))
-    ax = fig.add_subplot(111) 
+    fig =  Figure(figsize=(30, 30))
+    ax = fig.add_subplot() 
     ax.plot(user_X, label=user_file, color= "red" ,alpha =  0.7) #purple  red 
     ax.plot(org_X, label=org_file , color = "green",zorder=0.6 ) #orange green
     plt.xlim(0, len(user_X))
-    plt.title('Graph of the specimen and original song')
+    ax.set_xlabel('Samples')
+    ax.set_ylabel('Amplitude')
+    ax.set_title('Waveform of audio files')
+    ax.legend()
     return fig
 
 # Function for comparing Audio Files   
