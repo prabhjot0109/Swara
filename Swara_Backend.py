@@ -1,26 +1,33 @@
+# Extractes raw data from .wav audio files
 import wave
+
+# Plots graph of audio files
 import matplotlib.pyplot as plt
+
+# Converts raw data into numerical arrays for plotting
 import numpy as np
+
+# Imposes graph in tkineter gui
 from matplotlib.figure import Figure
 
 #Function For plotting Audio Graphs 
 def plot_audio_files(user_file, org_file):
 
-    # Load audio files
+    # Loads audio files
     with wave.open(user_file, "rb") as wav_user_file:
         user_sr = wav_user_file.getframerate()
-        user_X = wav_user_file.readframes(user_sr)
+        user_X = wav_user_file.readframes(wav_user_file.getnframes())
         
 
     with wave.open(org_file, "rb") as wav_org_file:
         org_sr = wav_org_file.getframerate()
-        org_X = wav_org_file.readframes(org_sr)
+        org_X = wav_org_file.readframes(wav_org_file.getnframes())
         
     # Convert audio files to numpy arrays
     user_X = np.frombuffer(user_X, dtype=np.int16)
     org_X = np.frombuffer(org_X, dtype=np.int16)
 
-    #Plotting Graph
+    # Plotting Graph
     fig =  Figure(figsize=(20, 20))
     ax = fig.add_subplot(111) 
     ax.plot(user_X, label=user_file, color= "red" ,alpha =  0.7) #purple  red 
@@ -29,18 +36,18 @@ def plot_audio_files(user_file, org_file):
     plt.title('Graph of the specimen and original song')
     return fig
 
-#Function for comparing Audio Files   
+# Function for comparing Audio Files   
 def similarity_and_pitch(text, user_file, org_file):
 
-    # Load audio files
+    # Loads audio files
     with wave.open(user_file, "rb") as wav_user_file:
         user_sr = wav_user_file.getframerate()
-        user_X = wav_user_file.readframes(user_sr)
+        user_X = wav_user_file.readframes(wav_user_file.getnframes())
       
 
     with wave.open(org_file, "rb") as wav_org_file:
         org_sr = wav_org_file.getframerate()
-        org_X = wav_org_file.readframes(org_sr)
+        org_X = wav_org_file.readframes(wav_org_file.getnframes())
         
     
     # Convert audio files to numpy arrays
@@ -60,7 +67,7 @@ def similarity_and_pitch(text, user_file, org_file):
     similarity = np.corrcoef(user_X, org_X)[0, 1] * 100
     similarity = round(similarity, 2)
 
-    # Display results
+    # Displays result in tkinter GUI
     # text.config(text=f"Pitch Comparison: {pitch_comparison}\nSimilarity: {similarity}%")
     text.config(text=f"Pitch Comparison: {pitch_comparison}")
     
