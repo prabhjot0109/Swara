@@ -84,7 +84,6 @@ def recording(sec_e):
 
 
 #-------------------- Login Win -------------------- #
-
 def loginWin():
         clearWin(win_root)
 
@@ -161,8 +160,6 @@ def createUserWin():
     email_e.config(state="normal")
     email_e.grid(row=1,column=1)
 
-    #Check Button
-
     def enableEntry():
         username_e.config(state = "enabled")
         password_e.config(state = "enabled")
@@ -171,9 +168,10 @@ def createUserWin():
         choose.config(state = "enabled")
         submit.config(state = "enabled")
 
-    check = lambda : database.check(user_create_mobile,user_create_email,enableEntry)
-    check = Button(details_frame,text="Check", command= check )
-    check.grid(row=1,column=2,padx=10)
+    #Check Button
+    check_me = lambda : database.regCheck(mobile_no_e,email_e,enableEntry)
+    check_b = Button(details_frame,text="Check", command = check_me )
+    check_b.grid(row=1,column=2,padx=10)
     
     #Username
     username_l= Label(details_frame,text="Username : ")
@@ -241,7 +239,7 @@ def createUserWin():
     #Choose Button
     choose= Button(details_frame,text="Choose Date",command=choose_date)
     choose.grid(row=6,column=2)
-    submit.config(state="disabled")
+    choose.config(state="disabled")
     choose.config(state="disabled")
 
     #Button Frame
@@ -262,9 +260,7 @@ def createUserWin():
     back_b.grid(row=1,column=0,sticky='w')
         
 
-
 #-----------------Choose option window---------------#
-
 def chooseWin():
         clearWin(win_root)
         win_root.geometry("280x200")
@@ -287,7 +283,6 @@ def chooseWin():
 
 
 #-----------------Record audio window---------------#
-
 def recordWin():
         global orgMusic_file_loc
         global user_file_loc
@@ -333,7 +328,6 @@ def recordWin():
         
 
 #---------------- File Input Win -------------------#
-
 def fileWin():
         global user_file_loc
         global orgMusic_file_loc
@@ -376,7 +370,6 @@ def fileWin():
         
 
 #---------------- Graph Input Win ------------------- #
-
 def graphWin():
         global user_file_loc
         global orgMusic_file_loc              
@@ -422,9 +415,7 @@ def graphWin():
         log_b.place(x=860, y=700)
 
 
-
 # ---------------------- Acknowledgement Window ----------------------------------#
-
 def ackWin():
         clearWin(win_root)
         win_root.geometry("400x300")
