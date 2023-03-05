@@ -111,7 +111,9 @@ def loginWin():
         passEntry.place(x=120 ,y = 80)
         
         #Login Button
-        log_b = Button(win_root, fg="red", text = "Login"  ,font = "raleway 12 bold", command = lambda: Swara_Database.database.login(userEntry,passEntry,chooseWin)) #Checks and verify the login details
+        database = Swara_Database.Database()
+        login = lambda : database.login(userEntry,passEntry,chooseWin)  
+        log_b = Button(win_root, fg="red", text = "Login"  ,font = "raleway 12 bold", command = login) #Checks and verify the login details
         log_b.place(x = 160, y = 130)
 
         #Create User Button
