@@ -2,6 +2,7 @@
 from tkinter import *
 from tkinter import messagebox
 from tkinter import filedialog
+from tkcalendar import *
 
 # Canvas For imposing matplotlib graph with tkinter gui.
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg  
@@ -123,7 +124,142 @@ def loginWin():
 
 # Message box
 def createUserWin():
-        messagebox.showinfo("Work In Progress","This Section of Program is still Work in Progress")
+            #Window Properties
+    signUp_win = Toplevel(win_root)
+    signUp_win.geometry("410x500")
+    signUp_win.resizable(False,False)
+    signUp_win.title("Sign - Up")    
+    signUp_win.configure(bg="paleturquoise")  
+    signUp_win.grab_set()
+
+    #Heading Frame
+    h_frame= Frame(signUp_win,relief="ridge",bd=10)
+    h_frame.grid(row=0,column=0)
+    h= Label(h_frame,text="Create Account",font=("Book Antiqua",20),bg="white")
+    h.grid(padx=100,pady=2)
+
+    #Details Frame
+    details_frame= Frame( signUp_win)
+    details_frame.grid(row=1,column=0)
+
+    #Mobile No.
+    mobile_no_l= Label(details_frame,text="Mobile Number : ")      
+    mobile_no_l.grid(row=0,column=0,padx=5,pady=10)
+    user_create_mobile.set("")
+    
+    mobile_no_e= Entry(details_frame,width=20,justify="center",textvariable=user_create_mobile)
+    mobile_no_e.config(state="normal")
+    mobile_no_e.grid(row=0,column=1)
+
+    #E-mail
+    email_l= Label(details_frame,text="Email Address : ")
+    email_l.grid(row=1,column=0,padx=5,pady=10,sticky='w')
+    user_create_email.set("")
+    
+    email_e= Entry(details_frame,width=20,justify="center",textvariable=user_create_email)
+    email_e.config(state="normal")
+    email_e.grid(row=1,column=1)
+
+    #Check Button
+
+    def enableEntry():
+        username_e.config(state = "enabled")
+        password_e.config(state = "enabled")
+        first_name_e.config(state = "enabled")
+        last_name_e.config(state = "enabled")
+        choose.config(state = "enabled")
+        submit.config(state = "enabled")
+
+    check = lambda : database.check(user_create_mobile,user_create_email,enableEntry)
+    check = Button(details_frame,text="Check", command= check )
+    check.grid(row=1,column=2,padx=10)
+    
+    #Username
+    username_l= Label(details_frame,text="Username : ")
+    username_l.grid(row=2,column=0,padx=5,pady=10,sticky='w')
+    user_create_username.set("")
+    
+    username_e= Entry(details_frame,width=20,justify="center",textvariable=user_create_username)
+    username_e.grid(row=2,column=1)
+    username_e.config(state="disabled")
+
+    #Password
+    password_l= Label(details_frame,text="Password : ")
+    password_l.grid(row=3,column=0,padx=5,pady=10,sticky='w')
+    user_create_password.set("")
+    
+    password_e= Entry(details_frame,width=20,justify="center",textvariable=user_create_password)
+    password_e.grid(row=3,column=1)
+    password_e.config(state="disabled")
+
+    #First Name
+    first_name_l= Label(details_frame,text="First Name : ")
+    first_name_l.grid(row=4,column=0,padx=5,pady=10,sticky='w')
+    user_create_firstname.set("")
+    
+    first_name_e= Entry(details_frame,width=20,justify="center",textvariable=user_create_firstname)
+    first_name_e.grid(row=4,column=1)
+    first_name_e.config(state="disabled")
+
+    #Last Name
+    last_name_l= Label(details_frame,text="Last Name : ")
+    last_name_l.grid(row=5,column=0,padx=5,pady=10,sticky='w')
+    user_create_lastname.set("")
+    
+    last_name_e= Entry(details_frame,width=20,justify="center",textvariable=user_create_lastname)
+    last_name_e.grid(row=5,column=1)
+    last_name_e.config(state="disabled")
+
+    #DOB
+    dob_l= Label(details_frame,text="Date Of Birth : ")
+    dob_l.grid(row=6,column=0,padx=5,pady=10,sticky='w',columnspan=2)
+    
+    date_l= Label(details_frame)
+    date_l.grid(row=6,column=1,padx=5,pady=10)
+    user_create_dob.set("")          
+
+    #Function for Choosing Date
+    def choose_date():
+        date_picker= Toplevel( signUp_win)
+        date_picker.resizable(False,False)
+        date_picker.title("Date Picker")
+        date_picker.grab_set()
+        dob_e= Calendar(date_picker,selectmode='day',year=2000,month=1,day=1)                
+        dob_e.pack()
+
+        #Function for Saving chosen Date
+        def picked():
+            date_l.config(text=dob_e.get_date())
+            user_create_dob.set(dob_e.get_date())                    
+            date_picker.destroy()
+        
+        #Ok Button
+        ok= Button(date_picker,text="OK",bd=5,command=picked)
+        ok.pack(pady=10)           
+
+    #Choose Button
+    choose= Button(details_frame,text="Choose Date",command=choose_date)
+    choose.grid(row=6,column=2)
+    submit.config(state="disabled")
+    choose.config(state="disabled")
+
+    #Button Frame
+    b_frame= Frame( signUp_win)
+    b_frame.grid(row=2,column=0)
+
+    #Sumbit Button
+    submit=Button(b_frame,text="SUBMIT",width=30,bd=6,font=30)
+    submit.config(state="disabled")
+    submit.grid(row=0,column=0,padx=10,pady=30)
+
+    #Function for going back to Login Win
+    def back():
+        signUp_win.destroy()
+
+    #Back Button
+    back_b=Button(b_frame,text="<--- Go Back to Login",bd=6,command=back)
+    back_b.grid(row=1,column=0,sticky='w')
+        
 
 
 #-----------------Choose option window---------------#
@@ -315,6 +451,18 @@ orgMusic_file_loc = ""
 
 uservalue = StringVar()
 passvalue = StringVar()
+
+#Variables for storing Signup details
+user_create_mobile= StringVar()
+user_create_email= StringVar()
+user_create_username= StringVar()
+user_create_password= StringVar()
+user_create_firstname= StringVar()
+user_create_lastname= StringVar()
+user_create_dob= StringVar()
+
+#Objects
+database = Swara_Database.Database()
 
 #Welcome Text frame
 wel_fr=Frame(win_root, bg="paleturquoise" )
