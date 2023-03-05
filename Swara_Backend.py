@@ -76,7 +76,7 @@ def similarity_and_pitch(text, user_file, org_file):
     similarity = round(similarity, 2)
 
     # Displays result in tkinter GUI
-    text.config(text=f"Pitch Comparison: {pitch_comparison}\nSimilarity: {similarity}%")
-    # text.config(text=f"Pitch Comparison: {pitch_comparison}")
+    # text.config(text=f"Pitch Comparison: {pitch_comparison}\nSimilarity: {similarity}%")
+    text.config(text=f"Pitch Comparison: {pitch_comparison}")
     
 

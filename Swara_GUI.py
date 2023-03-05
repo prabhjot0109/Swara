@@ -220,14 +220,14 @@ def fileWin():
         inst_l.place(x = 50,y = 50)
 
         #User File
-        user_file_l = Label(win_root , text= "Recorded File :   " , bg="paleturquoise")
+        user_file_l = Label(win_root , text= "Recorded File :   " , bg="paleturquoise",  font= ("times  10 bold"))
         user_file_l.place(x= 30 , y = 85)
         user_file_but = Button(win_root , text= "Browse",command=lambda : fileInput(30,85))
         user_file_loc = fileInput(30,85)
         user_file_but.place(x=140, y = 85)
 
         #Original File
-        org_music_l = Label(win_root , text= "Original File : " , bg="paleturquoise")  
+        org_music_l = Label(win_root , text= "Original File : " , bg="paleturquoise" , font= ("times  10 bold"))
         org_music_l.place(x = 30,y=140)
         org_file_but = Button(win_root , text= "Browse",command=lambda : fileInput(30,140))
         orgMusic_file_loc = fileInput(30,140)
@@ -238,7 +238,6 @@ def fileWin():
         plot_and_compare_button = Button(win_root, text="Plot and Compare",command=graphWin)
         plot_and_compare_button.place(x=120, y = 220)
         
-
 
 #---------------- Graph Input Win ------------------- #
 
@@ -284,7 +283,7 @@ def graphWin():
                
         # Creating Close Button    
         log_b = Button(win_root, fg="red", text = "CLOSE"  ,font = "raleway 12 bold", command = ackWin)
-        log_b.place(x=860, y=660)
+        log_b.place(x=860, y=700)
 
 
 
