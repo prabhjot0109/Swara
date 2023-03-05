@@ -1,82 +1,66 @@
-# Extractes raw data from .wav audio files
-import wave
+import mysql.connector
+from tkinter import messagebox
 
-# Plots graph of audio files
-import matplotlib.pyplot as plt
+class Database:
+    #Checking Connection with Database
+    try:
+        mycon = mysql.connector.connect(
+                host = "bdviswxznb9a4x9gntyw-mysql.services.clever-cloud.com",
+                user = "umi4t5ojvgegwvre",
+                password = "v7eLTxeCKFcIibZv0dFN",
+                database = "bdviswxznb9a4x9gntyw"
+        )
 
-# Converts raw data into numerical arrays for plotting
-import numpy as np
+        # Creating an Object for working in Database
+        cur = mycon.cursor()
 
-# Imposes graph in tkineter gui
-from matplotlib.figure import Figure
+        #If Connection is Successfull 
+        if mycon.is_connected(): 
+                messagebox.showinfo("Connection Successfull","Connected to database Successfully.")
 
-#Function For plotting Audio Graphs 
-def plot_audio_files(user_file, org_file):
 
-    # Loads audio files
-    with wave.open(user_file, "rb") as wav_user_file:
-        user_sr = wav_user_file.getframerate()
-        user_X = wav_user_file.readframes(wav_user_file.getnframes())
-        
-
-    with wave.open(org_file, "rb") as wav_org_file:
-        org_sr = wav_org_file.getframerate()
-        org_X = wav_org_file.readframes(wav_org_file.getnframes())
-        
-    # Convert audio files to numpy arrays
-    user_X = np.frombuffer(user_X, dtype=np.int16)
-    org_X = np.frombuffer(org_X, dtype=np.int16)
-    
-    user_t = np.arange(user_X.size) / user_sr
-    org_t = np.arange(org_X.size) / org_sr
-
-    # Plot waveform graph
-    fig = Figure(figsize=(30 , 30))
-    ax = fig.add_subplot()
-
-    ax.plot(user_t, user_X, label=user_file, color="red", alpha=0.7)
-    ax.plot(org_t, org_X, label=org_file, color="green", zorder=0.6)
-    plt.xlim(0, len(user_X))
-    ax.set_xlabel("Time (s)")
-    ax.set_ylabel("Amplitude")
-    ax.set_title("Waveform of audio files")
-    ax.legend()
-
-    return fig
-
-# Function for comparing Audio Files   
-def similarity_and_pitch(text, user_file, org_file):
-
-    # Loads audio files
-    with wave.open(user_file, "rb") as wav_user_file:
-        user_sr = wav_user_file.getframerate()
-        user_X = wav_user_file.readframes(wav_user_file.getnframes())
-      
-
-    with wave.open(org_file, "rb") as wav_org_file:
-        org_sr = wav_org_file.getframerate()
-        org_X = wav_org_file.readframes(wav_org_file.getnframes())
+    #If Connection is Unsuccessful        
+    except mysql.connector.Error:
+            messagebox.showerror("Connection Failed","We can't connect to database at this movemnt.\nPlease Try Again Later.")
+            quit()
         
     
-    # Convert audio files to numpy arrays
-    user_X = np.frombuffer(user_X, dtype=np.int16)
-    org_X = np.frombuffer(org_X, dtype=np.int16)
+    #Function for Logging In User
+    def login(self,userEntry,passEntry,func):
+            
+            #Getting Username And Password entered
+            self.password = passEntry.get()
+            self.username = userEntry.get()
+
+            self.cur.execute("SELECT Username,Password FROM users")
+            self.data_retrieved=self.cur.fetchall()       #Storing username and password from database
+
+            #Condition for empty Entry Box
+            if self.username == "" or self.password == "":
+                    messagebox.showerror("No Data Entered","Please fill all the fields!")
+
+            else:
+                    #Correct Creditionals
+                    if (self.username,self.password) in self.data_retrieved:
+                            messagebox.showinfo("Success","You have Logged In Successfully.")
+                            func()               
+                    #Incorrect Creditionals                         
+                    else:
+                            messagebox.showerror("User not found","Username or Password is Incorrect") 
     
+    #Function for Checking New Users Email Id And Password
+    def check(self,mobileEntry,emailEnrtry,func):
+        #Getting Mobile No. and Email Id entered
+        self.mobile_no = mobileEntry.mobile.get()
+        self.email = emailEnrtry.get()
 
-    # Compare pitches
-    if np.mean(user_X) > np.mean(org_X):
-        pitch_comparison = 'File 1 has  higher pitch.'
-    elif np.mean(user_X) < np.mean(org_X):
-        pitch_comparison = 'File 2 has higher pitch.'
-    else:
-        pitch_comparison = 'Both the files have the same pitch.'
+        #Getting data from Table 
+        self.cur.execute("SELECT Mobile_no,Email FROM users")
+        self.data = self.cur.fetchall()
 
-    # Calculate similarity percentage
-    similarity = np.corrcoef(user_X, org_X)[0, 1] * 100
-    similarity = round(similarity, 2)
 
-    # Displays result in tkinter GUI
-    # text.config(text=f"Pitch Comparison: {pitch_comparison}\nSimilarity: {similarity}%")
-    text.config(text=f"Pitch Comparison: {pitch_comparison}")
-    
+        if (self.mobile_no,self.email) in self.data:
+               messagebox.showerror("Email and Phone alread exist")
+        
 
+           
