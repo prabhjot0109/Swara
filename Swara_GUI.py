@@ -257,10 +257,9 @@ def graphWin():
         result_text = Label(win_root, text="" , bg="paleturquoise" ,fg = "green",  font= ("Posterama  20"))
         result_text.pack()               
 
-
         # Creating the graph holding frame
-        grpframe = Frame(win_root , bg ="paleturquoise")
-        grpframe.pack(side=LEFT)
+        grpFrame = Frame(win_root , bg ="paleturquoise")
+        grpFrame.pack(side=LEFT)
         
         #Code execution and selection.
         try:    
@@ -272,7 +271,7 @@ def graphWin():
 
 
         #Placing Graph in Tkinter GUI Window using canvas
-        canvas = FigureCanvasTkAgg( fig, master=grpframe)
+        canvas = FigureCanvasTkAgg( fig, master=grpFrame)
         canvas.draw()
         canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=2)
                

@@ -26,7 +26,7 @@ class Database:
         
     
     #Function for logging in User
-    def database_login(self,userEntry,passEntry,func):
+    def login(self,userEntry,passEntry,func):
             
             #Getting Username And Password entered
             self.password = passEntry.get()
@@ -37,16 +37,16 @@ class Database:
 
             #Condition for empty Entry Box
             if self.username == "" or self.password == "":
-                    messagebox.showerror("No Data Entered","Please fill all the fields!")
+                messagebox.showerror("No Data Entered","Please fill all the fields!")
 
             else:
-                    #Correct Creditionals
-                    if (self.username,self.password) in data_retrieved:
-                            messagebox.showinfo("Success","You have Logged In Successfully.")
-                            func()               
-                    #Incorrect Creditionals                         
-                    else:
-                            messagebox.showerror("User not found","Username or Password is wrong") 
+                #Correct Creditionals
+                if (self.username,self.password) in data_retrieved:
+                        messagebox.showinfo("Success","You have Logged In Successfully.")
+                        func()               
+                #Incorrect Creditionals                         
+                else:
+                        messagebox.showerror("User not found","Username or Password is wrong") 
     
     #Function for Creating User
                   

@@ -26,17 +26,22 @@ def plot_audio_files(user_file, org_file):
     # Convert audio files to numpy arrays
     user_X = np.frombuffer(user_X, dtype=np.int16)
     org_X = np.frombuffer(org_X, dtype=np.int16)
+    
+    user_t = np.arange(user_X.size) / user_sr
+    org_t = np.arange(org_X.size) / org_sr
 
-    # Plotting Graph
-    fig =  Figure(figsize=(30, 30))
-    ax = fig.add_subplot() 
-    ax.plot(user_X, label=user_file, color= "red" ,alpha =  0.7) #purple  red 
-    ax.plot(org_X, label=org_file , color = "green",zorder=0.6 ) #orange green
-    plt.xlim(0, len(user_X))
-    ax.set_xlabel('Samples')
-    ax.set_ylabel('Amplitude')
-    ax.set_title('Waveform of audio files')
+    # Plot waveform graph
+    fig = Figure(figsize=(10, 6))
+    ax = fig.add_subplot()
+
+    ax.plot(user_t, user_X, label=user_file, color="red", alpha=0.7)
+    ax.plot(org_t, org_X, label=org_file, color="green", alpha=0.7)
+    
+    ax.set_xlabel("Time (s)")
+    ax.set_ylabel("Amplitude")
+    ax.set_title("Waveform of audio files")
     ax.legend()
+
     return fig
 
 # Function for comparing Audio Files   
