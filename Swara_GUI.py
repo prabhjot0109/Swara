@@ -83,6 +83,7 @@ def recording(sec_e):
 
 
 #-------------------- Login Win -------------------- #
+
 def loginWin():
         clearWin(win_root)
 
@@ -127,6 +128,7 @@ def createUserWin():
 
 
 #-----------------Choose option window---------------#
+
 def chooseWin():
         clearWin(win_root)
         win_root.geometry("280x200")
@@ -147,7 +149,9 @@ def chooseWin():
         up_b = Button(win_root, fg = "red", text = "Upload File", font = " raleway 12 bold" , command = fileWin)
         up_b.place(x = 20, y = 130)
 
+
 #-----------------Record audio window---------------#
+
 def recordWin():
         global orgMusic_file_loc
         global user_file_loc
@@ -192,7 +196,8 @@ def recordWin():
         next_button.place(x= 160 , y= 350)
         
 
-#---------------- File Input Win -------------------
+#---------------- File Input Win -------------------#
+
 def fileWin():
         global user_file_loc
         global orgMusic_file_loc
@@ -234,14 +239,16 @@ def fileWin():
         plot_and_compare_button.place(x=120, y = 220)
         
 
+
 #---------------- Graph Input Win ------------------- #
+
 def graphWin():
         global user_file_loc
         global orgMusic_file_loc              
         
         #Configuring Main Window
         clearWin(win_root)
-        win_root.geometry("1500x700") 
+        win_root.geometry("1500x760") 
         win_root.configure(bg="paleturquoise")
         win_root.title("Graph Input")
 
@@ -279,7 +286,10 @@ def graphWin():
         log_b = Button(win_root, fg="red", text = "CLOSE"  ,font = "raleway 12 bold", command = ackWin)
         log_b.place(x=860, y=660)
 
-# ---------------------- Acknowledgement Window ----------------------------------
+
+
+# ---------------------- Acknowledgement Window ----------------------------------#
+
 def ackWin():
         clearWin(win_root)
         win_root.geometry("400x300")
@@ -300,7 +310,6 @@ def ackWin():
 
 
 # --------------- Main Window --------------------- #
-
 
 #Window Properties
 win_root = Tk() 

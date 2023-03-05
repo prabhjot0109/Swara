@@ -31,12 +31,12 @@ def plot_audio_files(user_file, org_file):
     org_t = np.arange(org_X.size) / org_sr
 
     # Plot waveform graph
-    fig = Figure(figsize=(10, 6))
+    fig = Figure(figsize=(30 , 30))
     ax = fig.add_subplot()
 
     ax.plot(user_t, user_X, label=user_file, color="red", alpha=0.7)
-    ax.plot(org_t, org_X, label=org_file, color="green", alpha=0.7)
-    
+    ax.plot(org_t, org_X, label=org_file, color="green", zorder=0.6)
+    plt.xlim(0, len(user_X))
     ax.set_xlabel("Time (s)")
     ax.set_ylabel("Amplitude")
     ax.set_title("Waveform of audio files")
@@ -76,7 +76,7 @@ def similarity_and_pitch(text, user_file, org_file):
     similarity = round(similarity, 2)
 
     # Displays result in tkinter GUI
-    # text.config(text=f"Pitch Comparison: {pitch_comparison}\nSimilarity: {similarity}%")
-    text.config(text=f"Pitch Comparison: {pitch_comparison}")
+    text.config(text=f"Pitch Comparison: {pitch_comparison}\nSimilarity: {similarity}%")
+    # text.config(text=f"Pitch Comparison: {pitch_comparison}")
     
 
