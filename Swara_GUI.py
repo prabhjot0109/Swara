@@ -111,17 +111,19 @@ def loginWin():
         passEntry.place(x=120 ,y = 80)
         
         #Login Button
-        log_b = Button(win_root, fg="red", text = "Login"  ,font = "raleway 12 bold", command = lambda: Swara_Database.database(userEntry,passEntry,chooseWin)) #Checks and verify the login details
+        log_b = Button(win_root, fg="red", text = "Login"  ,font = "raleway 12 bold", command = lambda: Swara_Database.database.login(userEntry,passEntry,chooseWin)) #Checks and verify the login details
         log_b.place(x = 160, y = 130)
 
         #Create User Button
         c_user_b = Button(win_root, fg = "red", text = "Sign - Up", font = " raleway 12 bold" ,command= createUserWin)
         c_user_b.place(x = 30, y = 130)
 
+
 # Message box
 def createUserWin():
         messagebox.showinfo("Work In Progress","This Section of Program is still Work in Progress")
-        
+
+
 #-----------------Choose option window---------------#
 def chooseWin():
         clearWin(win_root)
