@@ -84,6 +84,7 @@ def recording(sec_e):
 
 
 #-------------------- Login Win -------------------- #
+
 def loginWin():
         clearWin(win_root)
 
@@ -263,6 +264,7 @@ def createUserWin():
 
 
 #-----------------Choose option window---------------#
+
 def chooseWin():
         clearWin(win_root)
         win_root.geometry("280x200")
@@ -283,7 +285,9 @@ def chooseWin():
         up_b = Button(win_root, fg = "red", text = "Upload File", font = " raleway 12 bold" , command = fileWin)
         up_b.place(x = 20, y = 130)
 
+
 #-----------------Record audio window---------------#
+
 def recordWin():
         global orgMusic_file_loc
         global user_file_loc
@@ -328,7 +332,8 @@ def recordWin():
         next_button.place(x= 160 , y= 350)
         
 
-#---------------- File Input Win -------------------
+#---------------- File Input Win -------------------#
+
 def fileWin():
         global user_file_loc
         global orgMusic_file_loc
@@ -351,14 +356,14 @@ def fileWin():
         inst_l.place(x = 50,y = 50)
 
         #User File
-        user_file_l = Label(win_root , text= "Recorded File :   " , bg="paleturquoise")
+        user_file_l = Label(win_root , text= "Recorded File :   " , bg="paleturquoise",  font= ("times  10 bold"))
         user_file_l.place(x= 30 , y = 85)
         user_file_but = Button(win_root , text= "Browse",command=lambda : fileInput(30,85))
         user_file_loc = fileInput(30,85)
         user_file_but.place(x=140, y = 85)
 
         #Original File
-        org_music_l = Label(win_root , text= "Original File : " , bg="paleturquoise")  
+        org_music_l = Label(win_root , text= "Original File : " , bg="paleturquoise" , font= ("times  10 bold"))
         org_music_l.place(x = 30,y=140)
         org_file_but = Button(win_root , text= "Browse",command=lambda : fileInput(30,140))
         orgMusic_file_loc = fileInput(30,140)
@@ -371,13 +376,14 @@ def fileWin():
         
 
 #---------------- Graph Input Win ------------------- #
+
 def graphWin():
         global user_file_loc
         global orgMusic_file_loc              
         
         #Configuring Main Window
         clearWin(win_root)
-        win_root.geometry("1500x700") 
+        win_root.geometry("1500x760") 
         win_root.configure(bg="paleturquoise")
         win_root.title("Graph Input")
 
@@ -413,9 +419,12 @@ def graphWin():
                
         # Creating Close Button    
         log_b = Button(win_root, fg="red", text = "CLOSE"  ,font = "raleway 12 bold", command = ackWin)
-        log_b.place(x=860, y=660)
+        log_b.place(x=860, y=700)
 
-# ---------------------- Acknowledgement Window ----------------------------------
+
+
+# ---------------------- Acknowledgement Window ----------------------------------#
+
 def ackWin():
         clearWin(win_root)
         win_root.geometry("400x300")
@@ -436,7 +445,6 @@ def ackWin():
 
 
 # --------------- Main Window --------------------- #
-
 
 #Window Properties
 win_root = Tk() 
