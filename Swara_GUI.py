@@ -161,13 +161,13 @@ def createUserWin():
     email_e.grid(row=1,column=1)
 
     def enableEntry():
-        username_e.config(state = "normal")
-        password_e.config(state = "normal")
         first_name_e.config(state = "normal")
         last_name_e.config(state = "normal")
+        username_e.config(state = "normal")
+        password_e.config(state = "normal")
         choose.config(state = "normal")
-        submit.config(state = "normal")
-        check_b.config(state = "disabled")
+        submit_b.config(state = "normal")
+        # check_b.destroy()
 
     #Check Button
     check_me = lambda : database.regCheck(mobile_no_e,email_e,enableEntry)
@@ -188,7 +188,7 @@ def createUserWin():
     password_l.grid(row=3,column=0,padx=5,pady=10,sticky='w')
     user_create_password.set("")
     
-    password_e= Entry(details_frame,width=20,justify="center",textvariable=user_create_password)
+    password_e= Entry(details_frame,width=20,justify="center",show = "*",textvariable=user_create_password)
     password_e.grid(row=3,column=1)
     password_e.config(state="disabled")
 
@@ -248,9 +248,10 @@ def createUserWin():
     b_frame.grid(row=2,column=0)
 
     #Sumbit Button
-    submit=Button(b_frame,text="SUBMIT",width=30,bd=6,font=30)
-    submit.config(state="disabled")
-    submit.grid(row=0,column=0,padx=10,pady=30)
+    submit = lambda : database.regSumbit(signUp_win, user_create_email, user_create_mobile,user_create_username,user_create_password,user_create_firstname,user_create_lastname,user_create_dob ) 
+    submit_b =Button(b_frame,text="SUBMIT",width=30,bd=6,font=30, command = submit)
+    submit_b.config(state="disabled")
+    submit_b.grid(row=0,column=0,padx=10,pady=30)
 
     #Function for going back to Login Win
     def back():

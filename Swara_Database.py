@@ -11,9 +11,11 @@ class Database:
                 database = "bdviswxznb9a4x9gntyw"
         )
 
+        mycon.autocommit = True
+
         # Creating an Object for working in Database
         cur = mycon.cursor()
-
+    
         #If Connection is Successfull 
         if mycon.is_connected(): 
                 messagebox.showinfo("Connection Successfull","Connected to database Successfully.")
@@ -50,6 +52,9 @@ class Database:
     
     #Function for Checking New Users Email Id And Password
     def regCheck(self,mobileEntry,emailEnrtry,func):
+
+        self.cond = True
+
         #Getting Mobile No. and Email Id entered
         self.mobile_no = mobileEntry.get()
         self.email = emailEnrtry.get()
@@ -70,18 +75,59 @@ class Database:
         else:
             for current in self.data:
                 if (self.mobile_no in current) and (self.email in current):
-                        messagebox.showerror("Already Exists","Email and Phone alread exist")
-                    
+                    messagebox.showerror("Already Exists","Email and Phone alread exist")
+                    self.cond = False
+ 
                 elif (self.mobile_no not in current) and (self.email in current):
-                        messagebox.showerror("Already Exists","Email Already Exists")
-                    
+                    messagebox.showerror("Already Exists","Email Already Exists")
+                    self.cond = False
+ 
                 elif (self.mobile_no in current) and (self.email not in current):
-                        messagebox.showerror("Already Exists","Mobile No. Already Exists")
+                    messagebox.showerror("Already Exists","Mobile No. Already Exists")
+                    self.cond = False
+ 
+                #Enabling the disaled Entries after verification is complete
+                else:
+                    self.cond = True
+        if self.cond == True :
+            func()
+    
+    #Function for Uploading/Sumbitting details on Database 
+    def regSumbit(self, win, emailEntry, mobileEntry, usernameEntry, passwordEntry, firstNameEntry ,lastNameEntry ,dobEntry):
+        #Getting all the detaila from entrybox
+        self.newUser = usernameEntry.get()
+        self.firstName = firstNameEntry.get()
+        self.lastName = lastNameEntry.get()
+        self.newMobile = mobileEntry.get()
+        self.newEmail = emailEntry.get()
+        self.newPass = passwordEntry.get()
+        self.dob = dobEntry.get()
+
+        print(self.newUser)
+
+        self.newMobile = int(self.newMobile) 
+        self.cur.execute("SELECT Username FROM users")
+        self.data = self.cur.fetchall()
+        
+        #Checking Username And Name 
+        if self.newUser not in self.data:
+            if len(self.password) < 6 :
+                messagebox.showerror("Short Password","Password should be Greater.") 
+
+            else:    
+                #Uploading Data
+                if self.firstName.isalpha() and self.lastName.isalpha() :
+                    self.cur.execute(f"INSERT INTO users (Username,F_name,L_name,Mobile_no,Email,Password,DOB) VALUES('{self.newUser}','{self.firstName}','{self.lastName}','{self.newMobile}','{self.newEmail}','{self.newPass}','{self.dob}')")            
+                    win.destroy()
+                    messagebox.showinfo("Registration Successfull","You Have Registered Successfully ...")
                     
-            #Enabling the disaled Entries after verification is complete
-            else:
-                func()
-            
+
+                else:
+                    messagebox.showerror("Invalid Input","Please Input First Name and Last Name in Alphabetical form.")
+        
+        else:
+            messagebox.showerror("Data Conflict","Username Already Exists.")
+                    
         
 
            
