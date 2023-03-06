@@ -78,9 +78,9 @@ class Database:
                 elif (self.mobile_no in current) and (self.email not in current):
                         messagebox.showerror("Already Exists","Mobile No. Already Exists")
                     
-                #Enabling the disaled Entries after verification is complete
-                else:
-                        func()
+            #Enabling the disaled Entries after verification is complete
+            else:
+                func()
             
         
 

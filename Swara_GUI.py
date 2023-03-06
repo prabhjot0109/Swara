@@ -167,6 +167,7 @@ def createUserWin():
         last_name_e.config(state = "normal")
         choose.config(state = "normal")
         submit.config(state = "normal")
+        check_b.config(state = "disabled")
 
     #Check Button
     check_me = lambda : database.regCheck(mobile_no_e,email_e,enableEntry)
