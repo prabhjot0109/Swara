@@ -58,27 +58,30 @@ class Database:
         self.cur.execute("SELECT Mobile_no,Email FROM users")
         self.data = self.cur.fetchall()
 
-        print(self.mobile_no,self.email)
-        print(self.data)
-
         #Checking Details
-        if (self.mobile_no in self.data) and (self.email in self.data):
-            messagebox.showerror("Already Exists","Email and Phone alread exist")
-        
-        elif (self.mobile_no not in self.data) and (self.email in self.data):
-            messagebox.showerror("Already Exists","Email Already Exists")
-        
-        elif (self.mobile_no in self.data) and (self.email not in self.data):
-            messagebox.showerror("Already Exists","Mobile No. Already Exists")
-        
-        elif self.mobile_no.isdigit() == False:
-            messagebox.showerror("Invalid Input","Please Enter Mobile No. in Numeric Form .")
-        
+        #Invalid Input of Mobile No.
+        if self.mobile_no.isdigit() == False:
+            messagebox.showerror("Invalid Input","Please Enter Valid Mobile No. \nIn Digits")
 
-        #Enabling the disaled Entries
-        else:
-            func()
+        elif len(self.mobile_no) != 10:
+            messagebox.showerror("Invalid Input","Please Enter Valid Mobile No. \nIt should be of 10 digits  ")
         
+        #If Mobile No. satisfies the above conditons
+        else:
+            for current in self.data:
+                if (self.mobile_no in current) and (self.email in current):
+                        messagebox.showerror("Already Exists","Email and Phone alread exist")
+                    
+                elif (self.mobile_no not in current) and (self.email in current):
+                        messagebox.showerror("Already Exists","Email Already Exists")
+                    
+                elif (self.mobile_no in current) and (self.email not in current):
+                        messagebox.showerror("Already Exists","Mobile No. Already Exists")
+                    
+                #Enabling the disaled Entries after verification is complete
+                else:
+                        func()
+            
         
 
            
