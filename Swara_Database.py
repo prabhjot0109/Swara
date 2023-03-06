@@ -111,8 +111,8 @@ class Database:
         
         #Checking Username And Name 
         if self.newUser not in self.data:
-            if len(self.password) < 6 :
-                messagebox.showerror("Short Password","Password should be Greater.") 
+            if len(self.newPass) < 6 :
+                messagebox.showerror("Short Password","Password should have length greater than 6.") 
 
             else:    
                 #Uploading Data
