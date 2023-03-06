@@ -122,9 +122,12 @@ def loginWin():
         c_user_b.place(x = 30, y = 130)
 
 
-# Message box
+
+#----------------------------Sign Up window------------------------------------------#
+
 def createUserWin():
-            #Window Properties
+    
+    #Window Properties
     signUp_win = Toplevel(win_root)
     signUp_win.geometry("410x500")
     signUp_win.resizable(False,False)
@@ -133,17 +136,17 @@ def createUserWin():
     signUp_win.grab_set()
 
     #Heading Frame
-    h_frame= Frame(signUp_win,relief="ridge",bd=10)
+    h_frame= Frame(signUp_win , bg="paleturquoise" ,bd=10)
     h_frame.grid(row=0,column=0)
-    h= Label(h_frame,text="Create Account",font=("Book Antiqua",20),bg="white")
+    h= Label(h_frame ,text="Create Account",font=("Times 20 bold") , bg="paleturquoise")
     h.grid(padx=100,pady=2)
 
     #Details Frame
-    details_frame= Frame( signUp_win)
+    details_frame= Frame(signUp_win , bg="paleturquoise")
     details_frame.grid(row=1,column=0)
 
     #Mobile No.
-    mobile_no_l= Label(details_frame,text="Mobile Number : ")      
+    mobile_no_l= Label(details_frame,text="Mobile Number : " , bg="paleturquoise")      
     mobile_no_l.grid(row=0,column=0,padx=5,pady=10)
     user_create_mobile.set("")
     
@@ -152,7 +155,7 @@ def createUserWin():
     mobile_no_e.grid(row=0,column=1)
 
     #E-mail
-    email_l= Label(details_frame,text="Email Address : ")
+    email_l= Label(details_frame,text="Email Address : " , bg="paleturquoise")
     email_l.grid(row=1,column=0,padx=5,pady=10,sticky='w')
     user_create_email.set("")
     
@@ -171,11 +174,11 @@ def createUserWin():
 
     #Check Button
     check_me = lambda : database.regCheck(mobile_no_e,email_e,enableEntry)
-    check_b = Button(details_frame,text="Check", command = check_me )
+    check_b = Button(details_frame,text="Check", command = check_me , fg="red" ,  font= ("times  10 bold"))
     check_b.grid(row=1,column=2,padx=10)
     
     #Username
-    username_l= Label(details_frame,text="Username : ")
+    username_l= Label(details_frame,text="Username : " , bg="paleturquoise")
     username_l.grid(row=2,column=0,padx=5,pady=10,sticky='w')
     user_create_username.set("")
     
@@ -184,7 +187,7 @@ def createUserWin():
     username_e.config(state="disabled")
 
     #Password
-    password_l= Label(details_frame,text="Password : ")
+    password_l= Label(details_frame,text="Password : " , bg="paleturquoise")
     password_l.grid(row=3,column=0,padx=5,pady=10,sticky='w')
     user_create_password.set("")
     
@@ -193,7 +196,7 @@ def createUserWin():
     password_e.config(state="disabled")
 
     #First Name
-    first_name_l= Label(details_frame,text="First Name : ")
+    first_name_l= Label(details_frame,text="First Name : " , bg="paleturquoise")
     first_name_l.grid(row=4,column=0,padx=5,pady=10,sticky='w')
     user_create_firstname.set("")
     
@@ -202,7 +205,7 @@ def createUserWin():
     first_name_e.config(state="disabled")
 
     #Last Name
-    last_name_l= Label(details_frame,text="Last Name : ")
+    last_name_l= Label(details_frame,text="Last Name : " , bg="paleturquoise")
     last_name_l.grid(row=5,column=0,padx=5,pady=10,sticky='w')
     user_create_lastname.set("")
     
@@ -211,10 +214,10 @@ def createUserWin():
     last_name_e.config(state="disabled")
 
     #DOB
-    dob_l= Label(details_frame,text="Date Of Birth : ")
+    dob_l= Label(details_frame,text="Date Of Birth : " , bg="paleturquoise")
     dob_l.grid(row=6,column=0,padx=5,pady=10,sticky='w',columnspan=2)
     
-    date_l= Label(details_frame)
+    date_l= Label(details_frame , bg="paleturquoise")
     date_l.grid(row=6,column=1,padx=5,pady=10)
     user_create_dob.set("")          
 
@@ -234,32 +237,32 @@ def createUserWin():
             date_picker.destroy()
         
         #Ok Button
-        ok= Button(date_picker,text="OK",bd=5,command=picked)
+        ok= Button(date_picker,text="OK",bd=5,command=picked , fg= "red")
         ok.pack(pady=10)           
 
     #Choose Button
-    choose= Button(details_frame,text="Choose Date",command=choose_date)
+    choose= Button(details_frame,text="Choose Date",command=choose_date, fg="red", font= ("times  10 bold"))
     choose.grid(row=6,column=2)
     choose.config(state="disabled")
     choose.config(state="disabled")
 
     #Button Frame
-    b_frame= Frame( signUp_win)
+    b_frame= Frame(signUp_win , bg="paleturquoise")
     b_frame.grid(row=2,column=0)
 
     #Sumbit Button
     submit = lambda : database.regSumbit(signUp_win, user_create_email, user_create_mobile,user_create_username,user_create_password,user_create_firstname,user_create_lastname,user_create_dob ) 
-    submit_b =Button(b_frame,text="SUBMIT",width=30,bd=6,font=30, command = submit)
+    submit_b =Button(b_frame,text="SUBMIT",width=10,bd=6,font= ("Posterama  20 bold"), command = submit , fg = "red")
     submit_b.config(state="disabled")
-    submit_b.grid(row=0,column=0,padx=10,pady=30)
+    submit_b.grid(row=0,column=0,padx=15,pady=20)
 
     #Function for going back to Login Win
     def back():
         signUp_win.destroy()
 
     #Back Button
-    back_b=Button(b_frame,text="<--- Go Back to Login",bd=6,command=back)
-    back_b.grid(row=1,column=0,sticky='w')
+    back_b=Button(b_frame,text="<--- Go Back to Login",bd=6,command=back , fg = "black")
+    back_b.grid(row=1,column=0, sticky='w' , pady=1, padx=1 )
         
 
 #-----------------Choose option window---------------#
@@ -414,7 +417,7 @@ def graphWin():
                
         # Creating Close Button    
         log_b = Button(win_root, fg="red", text = "CLOSE"  ,font = "raleway 12 bold", command = ackWin)
-        log_b.place(x=860, y=700)
+        log_b.place(x=860, y=720)
 
 
 # ---------------------- Acknowledgement Window ----------------------------------#
