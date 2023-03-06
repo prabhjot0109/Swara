@@ -103,8 +103,6 @@ class Database:
         self.newPass = passwordEntry.get()
         self.dob = dobEntry.get()
 
-        print(self.newUser)
-
         self.newMobile = int(self.newMobile) 
         self.cur.execute("SELECT Username FROM users")
         self.data = self.cur.fetchall()
