@@ -7,9 +7,8 @@ import matplotlib.pyplot as plt
 # Converts raw data into numerical arrays for plotting
 import numpy as np
 
-# Imposes graph in tkineter gui
+# iuper Imposes graph in tkineter GUI
 from matplotlib.figure import Figure
-
 from scipy.fft import fft
 from scipy.spatial.distance import cosine
 

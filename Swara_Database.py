@@ -2,7 +2,6 @@ import mysql.connector
 from tkinter import messagebox
 
 class Database:
-        
     #Checking Connection with Database
     try:
         mycon = mysql.connector.connect(
@@ -23,9 +22,10 @@ class Database:
     #If Connection is Unsuccessful        
     except mysql.connector.Error:
             messagebox.showerror("Connection Failed","We can't connect to database at this movemnt.\nPlease Try Again Later.")
+            quit()
         
     
-    #Function for logging in User
+    #Function for Logging In User
     def login(self,userEntry,passEntry,func):
             
             #Getting Username And Password entered
@@ -33,20 +33,55 @@ class Database:
             self.username = userEntry.get()
 
             self.cur.execute("SELECT Username,Password FROM users")
-            data_retrieved=self.cur.fetchall()       #Storing username and password from database
+            self.data_retrieved=self.cur.fetchall()       #Storing username and password from database
 
             #Condition for empty Entry Box
             if self.username == "" or self.password == "":
-                messagebox.showerror("No Data Entered","Please fill all the fields!")
+                    messagebox.showerror("No Data Entered","Please fill all the fields!")
 
             else:
-                #Correct Creditionals
-                if (self.username,self.password) in data_retrieved:
-                        messagebox.showinfo("Success","You have Logged In Successfully.")
-                        func()               
-                #Incorrect Creditionals                         
-                else:
-                        messagebox.showerror("User not found","Username or Password is wrong") 
+                    #Correct Creditionals
+                    if (self.username,self.password) in self.data_retrieved:
+                            messagebox.showinfo("Success","You have Logged In Successfully.")
+                            func()               
+                    #Incorrect Creditionals                         
+                    else:
+                            messagebox.showerror("User not found","Username or Password is Incorrect") 
     
-    #Function for Creating User
+    #Function for Checking New Users Email Id And Password
+    def regCheck(self,mobileEntry,emailEnrtry,func):
+        #Getting Mobile No. and Email Id entered
+        self.mobile_no = mobileEntry.get()
+        self.email = emailEnrtry.get()
+
+        #Getting data from Table 
+        self.cur.execute("SELECT Mobile_no,Email FROM users")
+        self.data = self.cur.fetchall()
+
+        print(self.mobile_no,self.email)
+        print(self.data)
+
+        #Checking Details
+        if (self.mobile_no in self.data) and (self.email in self.data):
+            messagebox.showerror("Already Exists","Email and Phone alread exist")
+        
+        elif (self.mobile_no not in self.data) and (self.email in self.data):
+            messagebox.showerror("Already Exists","Email Already Exists")
+        
+        elif (self.mobile_no in self.data) and (self.email not in self.data):
+            messagebox.showerror("Already Exists","Mobile No. Already Exists")
+        
+        elif self.mobile_no.isdigit() == False:
+            messagebox.showerror("Invalid Input","Please Enter Mobile No. in Numeric Form .")
+        
+
+        #Enabling the disaled Entries
+        else:
+            func()
+        
+        
+
+           
+     
+
                   

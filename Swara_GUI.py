@@ -161,12 +161,12 @@ def createUserWin():
     email_e.grid(row=1,column=1)
 
     def enableEntry():
-        username_e.config(state = "enabled")
-        password_e.config(state = "enabled")
-        first_name_e.config(state = "enabled")
-        last_name_e.config(state = "enabled")
-        choose.config(state = "enabled")
-        submit.config(state = "enabled")
+        username_e.config(state = "normal")
+        password_e.config(state = "normal")
+        first_name_e.config(state = "normal")
+        last_name_e.config(state = "normal")
+        choose.config(state = "normal")
+        submit.config(state = "normal")
 
     #Check Button
     check_me = lambda : database.regCheck(mobile_no_e,email_e,enableEntry)
