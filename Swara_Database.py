@@ -37,7 +37,7 @@ class Database:
             self.cur.execute("SELECT Username,Password FROM users")
             self.data_retrieved=self.cur.fetchall()       #Storing username and password from database
 
-            #Condition for empty Entry Box
+            #Condition for Empty Entry Box
             if self.username == "" or self.password == "":
                     messagebox.showerror("No Data Entered","Please fill all the fields!")
 
@@ -138,10 +138,4 @@ class Database:
             
             else:
                 messagebox.showerror("Data Conflict","Username Already Exists.")
-                    
-        
-
-           
-     
-
-                  
+ 
