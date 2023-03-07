@@ -124,7 +124,8 @@ def loginWin():
 
 
 
-#----------------------------Sign Up window------------------------------------------#
+#----------------------------Sign Up window-----------------------------------#
+
 def createUserWin():
     
     #Window Properties
@@ -246,26 +247,25 @@ def createUserWin():
     choose.config(state="disabled")
     choose.config(state="disabled")
 
-    #Button Frame
-    b_frame= Frame(signUp_win , bg="paleturquoise")
-    b_frame.grid(row=2,column=0)
+   
 
     #Sumbit Button
     submit = lambda : database.regSumbit(signUp_win, user_create_email, user_create_mobile,user_create_username,user_create_password,user_create_firstname,user_create_lastname,user_create_dob ) 
-    submit_b =Button(b_frame,text="SUBMIT",width=10,bd=6,font= ("Posterama  20 bold"), command = submit , fg = "red")
+    submit_b =Button( signUp_win , text="SUBMIT",width=10,bd=6,font= ("Posterama  20 bold"), command = submit , fg = "red")
     submit_b.config(state="disabled")
-    submit_b.grid(row=0,column=0,padx=15,pady=20)
+    submit_b.place(x=100 , y=360)
 
     #Function for going back to Login Win
     def back():
         signUp_win.destroy()
 
     #Back Button
-    back_b=Button(b_frame,text="<--- Go Back to Login",bd=6,command=back , fg = "black")
-    back_b.grid(row=1,column=0, sticky='w' , pady=1, padx=1 )
+    back_b=Button(signUp_win ,text="<--- Go Back to Login",bd=6,command=back , fg = "black")
+    back_b.place( x= 6 , y= 450 )
         
 
 #-----------------Choose option window---------------#
+
 def chooseWin():
         functionality.clearWin(win_root)
         win_root.geometry("280x200")
@@ -278,16 +278,26 @@ def chooseWin():
         ch_text=Label(ch_h_fr, text="COMMAND" ,bg="paleturquoise", fg = "red", font= ("Posterama  20 bold"), padx = 200 , pady= 20)
         ch_text.pack()
         
-        #Command Button
+        #Record Button
         rec_b = Button(win_root, fg="red", text = "Record Audio"  ,font = "raleway 12 bold", command = recordWin )
         rec_b.place(x = 140, y = 130)
 
-        #Create User Button
+        #Upload Button
         up_b = Button(win_root, fg = "red", text = "Upload File", font = " raleway 12 bold" , command = fileWin)
         up_b.place(x = 20, y = 130)
 
+        #Function for going back to Login Win
+        def back():
+                win_root.destroy()
+
+        #Back Button
+        back_b=Button(text="<--- Go Back to Login",bd=6,command=back , fg = "black")
+        back_b.grid(row=1,column=0, sticky='w' , pady=1, padx=1 )
+                
+      
 
 #-----------------Record audio window---------------#
+
 def recordWin():
         global orgMusic_file_loc
         global user_file_loc
