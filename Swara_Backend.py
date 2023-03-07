@@ -62,6 +62,19 @@ def calculate_accuracy(user_file, org_file):
     user_X = np.frombuffer(user_X, dtype=np.int16)
     org_X = np.frombuffer(org_X, dtype=np.int16)
 
+    # # Calculate mean squared error (MSE)
+    # mse = np.square(np.subtract(user_X, org_X)).mean()
+
+    # # Calculate maximum possible amplitude and MSE
+    # max_amp = 2 ** 15  # 16-bit audio
+    # max_mse = max_amp ** 2
+
+    # # Calculate accuracy
+    # accuracy = (mse / max_mse)
+    
+    # print(accuracy)
+
+    # return accuracy
 
 
 # Function for comparing Audio Files   
