@@ -110,7 +110,7 @@ class Database:
         self.dob = dobEntry.get()
         
         #Checking for empty fields
-        if (self.newUser == "" or self.firstName == "" or self.lastName == "" or self.newMobile == "" or self.newEmail == "" or self.newPass == "" or self.dob):
+        if (self.newUser == "" or self.firstName == "" or self.lastName == "" or self.newMobile == "" or self.newEmail == "" or self.newPass == "" or self.dob == ""):
              messagebox.showerror("Empty Feilds","Please fill all the Feilds")
         
         else :
