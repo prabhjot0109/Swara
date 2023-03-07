@@ -170,7 +170,7 @@ def createUserWin():
         password_e.config(state = "normal")
         choose.config(state = "normal")
         submit_b.config(state = "normal")
-        # check_b.destroy()
+        check_b.destroy()
 
     #Check Button
     check_me = lambda : database.regCheck(mobile_no_e,email_e,enableEntry)
