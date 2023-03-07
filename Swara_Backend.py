@@ -35,8 +35,8 @@ def plot_audio_files(user_file, org_file):
     org_t = np.arange(org_X.size) / org_sr
 
     # Plot waveform graph
-    fig = Figure(figsize=(30 , 30))
-    ax = fig.add_subplot()
+    fig = Figure(figsize=(5,4), dpi=100)
+    ax = fig.add_subplot(111)
 
     ax.plot(user_t, user_X, label=user_file, color="red", alpha=0.7)
     ax.plot(org_t, org_X, label=org_file, color="green", zorder=0.6)
