@@ -13,7 +13,6 @@ from scipy.fft import fft
 from scipy.spatial.distance import cosine
 
 
-
 #Function For plotting Audio Graphs 
 def plot_audio_files(user_file, org_file):
 
@@ -79,7 +78,6 @@ def calculate_accuracy(user_file, org_file):
 
 
 # Function for comparing Audio Files   
-
 def similarity_and_pitch(text, user_file, org_file):
 
     # Loads audio files

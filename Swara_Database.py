@@ -37,7 +37,7 @@ class Database:
             self.cur.execute("SELECT Username,Password FROM users")
             self.data_retrieved=self.cur.fetchall()       #Storing username and password from database
 
-            #Condition for empty Entry Box
+            #Condition for Empty Entry Box
             if self.username == "" or self.password == "":
                     messagebox.showerror("No Data Entered","Please fill all the fields!")
 
@@ -64,33 +64,39 @@ class Database:
         self.data = self.cur.fetchall()
 
         #Checking Details
-        #Invalid Input of Mobile No.
-        if self.mobile_no.isdigit() == False:
-            messagebox.showerror("Invalid Input","Please Enter Valid Mobile No. \nIn Digits")
-
-        elif len(self.mobile_no) != 10:
-            messagebox.showerror("Invalid Input","Please Enter Valid Mobile No. \nIt should be of 10 digits  ")
         
-        #If Mobile No. satisfies the above conditons
+        #Empty Feilds
+        if self.mobile_no == "" or self.email == "" :
+             messagebox.showerror("Empty Feilds","Please fill all the feilds")
+
+        #Invalid Input of Mobile No.
         else:
-            for current in self.data:
-                if (self.mobile_no in current) and (self.email in current):
-                    messagebox.showerror("Already Exists","Email and Phone alread exist")
-                    self.cond = False
- 
-                elif (self.mobile_no not in current) and (self.email in current):
-                    messagebox.showerror("Already Exists","Email Already Exists")
-                    self.cond = False
- 
-                elif (self.mobile_no in current) and (self.email not in current):
-                    messagebox.showerror("Already Exists","Mobile No. Already Exists")
-                    self.cond = False
- 
-                #Enabling the disaled Entries after verification is complete
-                else:
-                    self.cond = True
-        if self.cond == True :
-            func()
+            if self.mobile_no.isdigit() == False:
+                messagebox.showerror("Invalid Input","Please Enter Valid Mobile No. \nIn Digits")
+
+            elif len(self.mobile_no) != 10:
+                messagebox.showerror("Invalid Input","Please Enter Valid Mobile No. \nIt should be of 10 digits  ")
+            
+            #If Mobile No. satisfies the above conditons
+            else:
+                for current in self.data:
+                    if (self.mobile_no in current) and (self.email in current):
+                        messagebox.showerror("Already Exists","Email and Phone alread exist")
+                        self.cond = False
+    
+                    elif (self.mobile_no not in current) and (self.email in current):
+                        messagebox.showerror("Already Exists","Email Already Exists")
+                        self.cond = False
+    
+                    elif (self.mobile_no in current) and (self.email not in current):
+                        messagebox.showerror("Already Exists","Mobile No. Already Exists")
+                        self.cond = False
+    
+                    #Enabling the disaled Entries after verification is complete
+                    else:
+                        self.cond = True
+            if self.cond == True :
+                func()
     
     #Function for Uploading/Sumbitting details on Database 
     def regSumbit(self, win, emailEntry, mobileEntry, usernameEntry, passwordEntry, firstNameEntry ,lastNameEntry ,dobEntry):
@@ -102,33 +108,34 @@ class Database:
         self.newEmail = emailEntry.get()
         self.newPass = passwordEntry.get()
         self.dob = dobEntry.get()
-
-        self.newMobile = int(self.newMobile) 
-        self.cur.execute("SELECT Username FROM users")
-        self.data = self.cur.fetchall()
         
-        #Checking Username And Name 
-        if self.newUser not in self.data:
-            if len(self.newPass) < 6 :
-                messagebox.showerror("Short Password","Password should have length greater than 6.") 
-
-            else:    
-                #Uploading Data
-                if self.firstName.isalpha() and self.lastName.isalpha() :
-                    self.cur.execute(f"INSERT INTO users (Username,F_name,L_name,Mobile_no,Email,Password,DOB) VALUES('{self.newUser}','{self.firstName}','{self.lastName}','{self.newMobile}','{self.newEmail}','{self.newPass}','{self.dob}')")            
-                    win.destroy()
-                    messagebox.showinfo("Registration Successfull","You Have Registered Successfully ...")
-                    
-
-                else:
-                    messagebox.showerror("Invalid Input","Please Input First Name and Last Name in Alphabetical form.")
+        #Checking for empty fields
+        if (self.newUser == "" or self.firstName == "" or self.lastName == "" or self.newMobile == "" or self.newEmail == "" or self.newPass == "" or self.dob == ""):
+             messagebox.showerror("Empty Feilds","Please fill all the Feilds")
         
-        else:
-            messagebox.showerror("Data Conflict","Username Already Exists.")
-                    
-        
+        else :
+            self.newMobile = int(self.newMobile) 
+            self.cur.execute("SELECT Username FROM users")
+            self.data = self.cur.fetchall()
+            
+            #Checking Username And Name 
+            if self.newUser not in self.data:
 
-           
-     
+                #Checking Password Length
+                if len(self.newPass) < 6 :
+                    messagebox.showerror("Short Password","Password should have length greater than 6.") 
 
-                  
+                else:    
+                    #Uploading Data
+                    if self.firstName.isalpha() and self.lastName.isalpha() :
+                        self.cur.execute(f"INSERT INTO users (Username,F_name,L_name,Mobile_no,Email,Password,DOB) VALUES('{self.newUser}','{self.firstName}','{self.lastName}','{self.newMobile}','{self.newEmail}','{self.newPass}','{self.dob}')")            
+                        win.destroy()
+                        messagebox.showinfo("Registration Successfull","You Have Registered Successfully ...")
+                        
+
+                    else:
+                        messagebox.showerror("Invalid Input","Please Input First Name and Last Name in Alphabetical form.")
+            
+            else:
+                messagebox.showerror("Data Conflict","Username Already Exists.")
+ 
