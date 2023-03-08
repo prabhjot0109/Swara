@@ -293,7 +293,7 @@ def recordWin():
             second_tracking = 0
             second_count = 0
             for i in range(0, int(RATE/FRAMES_PER_BUFFER*seconds)):
-                    ch3 = Label(win_root, textvariable = f'Time Left: {seconds - second_count} seconds' , bg="paleturquoise")
+                    ch3 = Label(rec_root, textvariable = f'Time Left: {seconds - second_count} seconds' , bg="paleturquoise")
                     ch3.place(x= 30 , y = 130)
                     data = record.read(FRAMES_PER_BUFFER)
                     frames.append(data)
@@ -338,7 +338,7 @@ def recordWin():
     org_music_l = Label(rec_root , text= "Original File : " , bg="paleturquoise",  font= ("Posterama  12 bold"))
     org_music_l.place(x= 20 , y= 80)
     orgMusic_file_loc = fileInput(20,80)
-    org_file_but = Button(rec_root , text= "Browse",command=lambda : fileInput(120,140))
+    org_file_but = Button(rec_root , text= "Browse",command=lambda : fileInput(20 , 80))#(120,140))
     org_file_but.place(x= 165 , y= 80)
     
     #Interval input label
@@ -414,7 +414,7 @@ def fileWin():
         #Instruction Text
         inst_l = Label(f_root,text="Input your recorded music file and Original Music File Here.",
                         bg="paleturquoise" , fg = "Red", font = ("Posterama  12 bold") )
-        inst_l.place(x = 50,y = 50)
+        inst_l.place(x = 20,y = 50)
 
         #User File
         user_file_l = Label(f_root , text= "Recorded File :   " , bg="paleturquoise",  font= ("times  12  bold"))
