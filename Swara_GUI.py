@@ -35,6 +35,8 @@ def fileInput(win,b_x,b_y):
                 return path
 
  #Function for Recording Audio
+
+#Function for recordign Audio
 def recording(win,sec_e):
         sec = sec_e.get()
         FRAMES_PER_BUFFER = 3200
@@ -83,8 +85,6 @@ def recording(win,sec_e):
         specimen.writeframes(b''.join(frames))
         specimen.close()
 
-
-
 #-------------------- Login Win -------------------- #
 
 def loginWin():
@@ -129,6 +129,8 @@ def loginWin():
 
 def createUserWin():
 
+    global signUp_win
+
     #Window Properties
     signUp_win = Toplevel(win_root)
     signUp_win.geometry("410x500")
@@ -136,6 +138,7 @@ def createUserWin():
     signUp_win.title("Sign - Up")    
     signUp_win.configure(bg="paleturquoise")  
     signUp_win.grab_set()
+
 
     #Heading Frame
     h_frame= Frame(signUp_win , bg="paleturquoise" ,bd=10)
@@ -226,7 +229,7 @@ def createUserWin():
 
     #Function for Choosing Date
     def choose_date():
-        date_picker= Toplevel( signUp_win)
+        date_picker= Toplevel(signUp_win)
         date_picker.resizable(False,False)
         date_picker.title("Date Picker")
         date_picker.grab_set()
@@ -269,7 +272,11 @@ def createUserWin():
 #-----------------Choose option window---------------#
 
 def chooseWin():
-        cnd_root = Tk() 
+
+        global cnd_root
+
+        #Command Window Properties
+        cnd_root = Toplevel(signUp_win) 
         cnd_root.configure(bg="paleturquoise")
         cnd_root.resizable(False,False)
         cnd_root.title("Option Window")
@@ -298,32 +305,26 @@ def chooseWin():
 
         #Back Button
         back_b=Button(cnd_root, text="<--- Go Back to Login",bd=6,command=back , fg = "black")
-        back_b.place(x=6 , y=160 )
-                
-      
+        back_b.place(x=6 , y=160 )  
+
 
 #-----------------Record audio window---------------#
 
 def recordWin():
-    rec_root = Tk() 
-    rec_root.geometry("520x450")
     
+    global rec_root
+
+    #Record Win Configurations
+    rec_root = Toplevel(cnd_root) 
+    rec_root.geometry("520x450")
     rec_root.configure(bg="paleturquoise")
     rec_root.resizable(False,False)
     rec_root.title("Record Audio")
-            
 
-   
-   
-    
     # Defining files path variables
 
     global orgMusic_file_loc
     global user_file_loc
-
-    #Global Variables
-    user_file_loc = ""
-    orgMusic_file_loc = ""
 
     user_file_loc = "Audio/user.wav"
 
@@ -368,19 +369,22 @@ def recordWin():
     #Back Button
     back_b=Button(rec_root ,text="<--- Go Back",bd=6,command=back , fg = "black")
     back_b.place(x= 10 , y=400)
-        
+  
 
 
 #------------------ File Input Win -------------------#
 
 def fileWin():
-                
-        f_root = Tk() 
+
+        global f_root
+
+        #File Input Win Configuration        
+        f_root = Toplevel(cnd_root) 
         f_root.configure(bg="paleturquoise")
         f_root.resizable(False,False)
         f_root.title("File Input")
-
         f_root.geometry("500x270")
+        f_root.toplevel()
         
         # Defining file path variables
 
@@ -390,7 +394,6 @@ def fileWin():
         #Global Variables
         user_file_loc = ""
         orgMusic_file_loc = ""
-
 
         #File Header Frame
         file_h_fr=Frame(f_root, bg ="paleturquoise" )
@@ -435,14 +438,13 @@ def fileWin():
         back_b.place(x=6, y=230)
             
 
-
 #---------------- Graph Input Win ------------------- #
 
 def graphWin():
                       
         
         #Configuring Main Window
-        grp_root = Tk() 
+        grp_root = Toplevel(f_root) 
         grp_root.geometry("450x460")
         grp_root.configure(bg="paleturquoise")
         grp_root.resizable(False,False)
@@ -530,6 +532,7 @@ def graphWin():
 
 #Window Properties
 win_root = Tk() 
+signUp_win = None
 win_root.geometry("450x460")
 win_root.configure(bg="paleturquoise")
 win_root.resizable(False,False)
@@ -539,6 +542,7 @@ win_root.title("Swara")
 user_file_loc = ""
 orgMusic_file_loc = ""
 
+#Variables for storing Login details 
 uservalue = StringVar()
 passvalue = StringVar()
 
