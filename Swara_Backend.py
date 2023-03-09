@@ -30,6 +30,7 @@ def plot_audio_files(user_file, org_file):
     user_X = np.frombuffer(user_X, dtype=np.int16)
     org_X = np.frombuffer(org_X, dtype=np.int16)
     
+    #Time = Frame Data/No. of Frames
     user_t = np.arange(user_X.size) / user_sr
     org_t = np.arange(org_X.size) / org_sr
 
@@ -84,17 +85,17 @@ def similarity_and_pitch(text, user_file, org_file):
     with wave.open(user_file, "rb") as wav_user_file:
         user_sr = wav_user_file.getframerate()
         user_X = wav_user_file.readframes(wav_user_file.getnframes())
-      
+        
 
     with wave.open(org_file, "rb") as wav_org_file:
         org_sr = wav_org_file.getframerate()
         org_X = wav_org_file.readframes(wav_org_file.getnframes())
         
-    
+
     # Convert audio files to numpy arrays
     user_X = np.frombuffer(user_X, dtype=np.int16)
     org_X = np.frombuffer(org_X, dtype=np.int16)
-    
+
     # Compare pitches
 
     if np.mean(user_X) > np.mean(org_X):
@@ -111,7 +112,7 @@ def similarity_and_pitch(text, user_file, org_file):
     # Displays result in tkinter GUI
 
     text.config(text=f"Pitch Comparison: {pitch_comparison}")
-    # text.config(text=f"Pitch Comparison: {pitch_comparison}\nSimilarity: {similarity}%")
+    text.config(text=f"Pitch Comparison: {pitch_comparison}\nSimilarity: {similarity}%")
     
     # print(pitch_comparison,similarity)
 

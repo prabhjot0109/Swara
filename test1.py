@@ -25,8 +25,7 @@ def clearWin(window):
 
 
 
-#-------------------- Login Win -------------------- #
-
+# -------------------- Login Win -------------------- #
 def loginWin():
         clearWin(win_root)
 
@@ -400,7 +399,6 @@ def fileWin():
         #Global Variables
         user_file_loc = ""
         orgMusic_file_loc = ""
-
 
         #File Header Frame
         file_h_fr=Frame(f_root, bg ="paleturquoise" )
