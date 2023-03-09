@@ -30,11 +30,9 @@ def fileInput(win,b_x,b_y):
         if file:
                 filePath = os.path.abspath(file.name)
                 path = filePath
-                file_loc_l = Label(win , text=str(filePath),font = "raleway 10 bold", bg="paleturquoise")
+                file_loc_l = Label(win , text = filePath ,font = "raleway 10 bold", bg="paleturquoise")
                 file_loc_l.place(x = b_x, y = (b_y + 30))                        
                 return path
-
- #Function for Recording Audio
 
 #Function for recordign Audio
 def recording(win,sec_e):
@@ -276,7 +274,8 @@ def chooseWin():
         global cnd_root
 
         #Command Window Properties
-        cnd_root = Toplevel(signUp_win) 
+        cnd_root = Toplevel(win_root)
+        cnd_root.grab_set() 
         cnd_root.configure(bg="paleturquoise")
         cnd_root.resizable(False,False)
         cnd_root.title("Option Window")
@@ -316,6 +315,7 @@ def recordWin():
 
     #Record Win Configurations
     rec_root = Toplevel(cnd_root) 
+    rec_root.grab_set()
     rec_root.geometry("520x450")
     rec_root.configure(bg="paleturquoise")
     rec_root.resizable(False,False)
@@ -379,12 +379,12 @@ def fileWin():
         global f_root
 
         #File Input Win Configuration        
-        f_root = Toplevel(cnd_root) 
+        f_root = Toplevel(cnd_root)
+        f_root.grab_set() 
         f_root.configure(bg="paleturquoise")
         f_root.resizable(False,False)
         f_root.title("File Input")
         f_root.geometry("500x270")
-        f_root.toplevel()
         
         # Defining file path variables
 
@@ -441,64 +441,65 @@ def fileWin():
 #---------------- Graph Input Win ------------------- #
 
 def graphWin():
-                      
-        
-        #Configuring Main Window
-        grp_root = Toplevel(f_root) 
-        grp_root.geometry("450x460")
-        grp_root.configure(bg="paleturquoise")
-        grp_root.resizable(False,False)
-        grp_root.geometry("1500x760") 
-        grp_root.title("Graph Input")
-        
         # Defining File path Variables
-
         global user_file_loc
         global orgMusic_file_loc
 
+        if user_file_loc == "" or orgMusic_file_loc == "":
+              messagebox.showerror("Missing Inputs","Please provide both the files.")
 
-        #Graph Window Header Frame
-        grp_h_fr=Frame(grp_root, bg="paleturquoise" )
-        grp_h_fr.pack(side=TOP, fill = X)
+        else:
+            #Configuring Main Window
+            grp_root = Toplevel(cnd_root) 
+            grp_root.grab_set()
+            grp_root.geometry("450x460")
+            grp_root.configure(bg="paleturquoise")
+            grp_root.resizable(False,False)
+            grp_root.geometry("1500x760") 
+            grp_root.title("Graph Input")
 
-        # Label for graph Window
-        grp_text=Label(grp_h_fr, text="GRAPH" , bg="paleturquoise" , fg = "red", font= ("Posterama  40"), pady= 10)
-        grp_text.pack()
-        
-        #Label to show which file has higher pitch
-        result_text = Label(grp_root, text="" , bg="paleturquoise" ,fg = "green",  font= ("Posterama  20"))
-        result_text.pack()               
+            #Graph Window Header Frame
+            grp_h_fr=Frame(grp_root, bg="paleturquoise" )
+            grp_h_fr.pack(side=TOP, fill = X)
 
-        
-        #Code execution and selection.
-        try:    
-                fig = Swara_Backend.plot_audio_files(user_file_loc,orgMusic_file_loc) 
-                Swara_Backend.similarity_and_pitch(result_text,user_file_loc,orgMusic_file_loc)
+            # Label for graph Window
+            grp_text=Label(grp_h_fr, text="GRAPH" , bg="paleturquoise" , fg = "red", font= ("Posterama  40"), pady= 10)
+            grp_text.pack()
+            
+            #Label to show which file has higher pitch
+            result_text = Label(grp_root, text="" , bg="paleturquoise" ,fg = "green",  font= ("Posterama  20"))
+            result_text.pack()               
 
-        except:
-                fig = Swara_Backend.plot_audio_files(user_file_loc,orgMusic_file_loc) 
+            
+            #Code execution and selection.
+            try:    
+                    fig = backend.plot_audio_files(user_file_loc,orgMusic_file_loc) 
+                    backend.similarity_and_pitch(result_text,user_file_loc,orgMusic_file_loc)
+
+            except:
+                    fig = backend.plot_audio_files(user_file_loc,orgMusic_file_loc) 
 
 
-        #Placing  Matplotlib Graph in Tkinter GUI Window using canvas
+            #Placing  Matplotlib Graph in Tkinter GUI Window using canvas
 
-        canvas = FigureCanvasTkAgg(fig, master = grp_root)
-        canvas.draw()
-        canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=1)
-         
-        #Placing  Matplotlib Graph Toolbar in Tkinter GUI Window using canvas
+            canvas = FigureCanvasTkAgg(fig, master = grp_root)
+            canvas.draw()
+            canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=1)
+            
+            #Placing  Matplotlib Graph Toolbar in Tkinter GUI Window using canvas
 
-        toolbar = NavigationToolbar2Tk(canvas , grp_root)
-        toolbar.update()
-        canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=1)
+            toolbar = NavigationToolbar2Tk(canvas , grp_root)
+            toolbar.update()
+            canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=1)
 
-               
-        #Function for going back to Login Win
-        def back():
-            grp_root.destroy()
+                
+            #Function for going back to Login Win
+            def back():
+                grp_root.destroy()
 
-        #Back Button
-        back_b=Button(grp_root ,text="<--- Go Back",bd=6,command=back , fg = "red")
-        back_b.place(x=660, y= 720 )
+            #Back Button
+            back_b=Button(grp_root ,text="<--- Go Back",bd=6,command=back , fg = "red")
+            back_b.place(x=660, y= 720 )
         
 
 # ---------------------- Acknowledgement Window ------------------------#
@@ -523,7 +524,6 @@ def graphWin():
                 messagebox.showinfo("Work In progress","This Program is still under development.")   
 
         # Creating Close Button    
-
         log_b = Button(grp_root, fg="red", text = "CLOSE"  ,font = "raleway 12 bold", command = ackWin)
         log_b.place(x=780, y=720)
 
@@ -539,8 +539,12 @@ win_root.resizable(False,False)
 win_root.title("Swara")
 
 #Global Variables
-user_file_loc = ""
-orgMusic_file_loc = ""
+# user_file_loc = ""
+# orgMusic_file_loc = ""
+
+user_file_loc = StringVar()
+orgMusic_file_loc = StringVar()
+
 
 #Variables for storing Login details 
 uservalue = StringVar()
@@ -557,6 +561,7 @@ user_create_dob= StringVar()
 
 #Objects
 database = Swara_Database.Database()
+backend = Swara_Backend.Backend()
 
 #Welcome Text frame
 wel_fr=Frame(win_root, bg="paleturquoise" )
