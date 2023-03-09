@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 # Converts raw data into numerical arrays for plotting
 import numpy as np
 
+from tkinter import messagebox
+
 # iuper Imposes graph in tkineter GUI
 from matplotlib.figure import Figure
 # from scipy.fft import fft
@@ -16,40 +18,44 @@ class Backend :
     
     #Function For plotting Audio Graphs 
     def plot_audio_files(self,user_file, org_file):
-
-        # Loads audio files
-        with wave.open(user_file, "rb") as self.wav_user_file:
-            self.user_sr = self.wav_user_file.getframerate()
-            self.user_X = self.wav_user_file.readframes(self.wav_user_file.getnframes())
-            
-
-        with wave.open(org_file, "rb") as self.wav_org_file:
-            self.org_sr = self.wav_org_file.getframerate()
-            self.org_X = self.wav_org_file.readframes(self.wav_org_file.getnframes())
-            
-        # Convert audio files to numpy arrays
-        self.user_X = np.frombuffer(self.user_X, dtype=np.int16)
-        self.org_X = np.frombuffer(self.org_X, dtype=np.int16)
         
-        #Time = Frame Data/No. of Frames
-        self.user_t = np.arange(self.user_X.size) / self.user_sr
-        self.org_t = np.arange(self.org_X.size) / self.org_sr
+        if user_file == "" or org_file == "":
+            messagebox.showerror("Missing Inputs","Please provide both the files.")
 
-        # Plot waveform graph
-        self.fig = Figure(figsize=(5,4), dpi=100)
-        self.ax = self.fig.add_subplot(111)
+        else:
+            # Loads audio files
+            with wave.open(user_file, "rb") as self.wav_user_file:
+                self.user_sr = self.wav_user_file.getframerate()
+                self.user_X = self.wav_user_file.readframes(self.wav_user_file.getnframes())
+                
 
-        self.ax.plot(self.user_t, self.user_X, label=user_file, color="red", alpha=0.7)
-        self.ax.plot(self.org_t, self.org_X, label=org_file, color="green", zorder=0.6)
+            with wave.open(org_file, "rb") as self.wav_org_file:
+                self.org_sr = self.wav_org_file.getframerate()
+                self.org_X = self.wav_org_file.readframes(self.wav_org_file.getnframes())
+                
+            # Convert audio files to numpy arrays
+            self.user_X = np.frombuffer(self.user_X, dtype=np.int16)
+            self.org_X = np.frombuffer(self.org_X, dtype=np.int16)
+            
+            #Time = Frame Data/No. of Frames
+            self.user_t = np.arange(self.user_X.size) / self.user_sr
+            self.org_t = np.arange(self.org_X.size) / self.org_sr
 
-        plt.xlim(0, len(self.user_X))
+            # Plot waveform graph
+            self.fig = Figure(figsize=(5,4), dpi=100)
+            self.ax = self.fig.add_subplot(111)
 
-        self.ax.set_xlabel("Time (s)")
-        self.ax.set_ylabel("Amplitude")
-        self.ax.set_title("Waveform of audio files")
-        self.ax.legend()
+            self.ax.plot(self.user_t, self.user_X, label=user_file, color="red", alpha=0.7)
+            self.ax.plot(self.org_t, self.org_X, label=org_file, color="green", zorder=0.6)
 
-        return self.fig
+            plt.xlim(0, len(self.user_X))
+
+            self.ax.set_xlabel("Time (s)")
+            self.ax.set_ylabel("Amplitude")
+            self.ax.set_title("Waveform of audio files")
+            self.ax.legend()
+
+            return self.fig
 
     def calculate_accuracy(self,user_file, org_file):
         with wave.open(user_file, "rb") as self.wav_user_file:

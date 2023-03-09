@@ -18,75 +18,77 @@ import Swara_Backend
 import Swara_Database
 
 
-#Function for clearing Win
-def clearWin(window):
-      for widgets in window.winfo_children():
-          widgets.destroy()
+#Functionality Class
+class Functionality:
+    #Function for clearing Win
+    def clearWin(self,window):
+        for widgets in window.winfo_children():
+            widgets.destroy()
 
-#Function for taking File Input 
-def fileInput(win,b_x,b_y):
-        file = filedialog.askopenfile(mode='r', filetypes=[('Music Files', '*.wav')])
-        
-        if file:
-                filePath = os.path.abspath(file.name)
-                path = filePath
-                file_loc_l = Label(win , text = filePath ,font = "raleway 10 bold", bg="paleturquoise")
-                file_loc_l.place(x = b_x, y = (b_y + 30))                        
-                return path
+    #Function for taking File Input 
+    def fileInput(self,win,b_x,b_y):
+            self.file = filedialog.askopenfile(mode='r', filetypes=[('Music Files', '*.wav')])
+            
+            if self.file:
+                    self.filePath = os.path.abspath(self.file.name)
+                    self.path = self.filePath
+                    self.file_loc_l = Label(win , text = self.filePath ,font = "raleway 10 bold", bg="paleturquoise")
+                    self.file_loc_l.place(x = b_x, y = (b_y + 30))                        
+                    return self.path
 
-#Function for recordign Audio
-def recording(win,sec_e):
-        sec = sec_e.get()
-        FRAMES_PER_BUFFER = 3200
-        FORMAT = pyaudio.paInt16
-        CHANNELS = 1
-        RATE = 16000
+    #Function for recordign Audio
+    def recording(self,win,sec_e):
+            self.sec = sec_e.get()
+            self.FRAMES_PER_BUFFER = 3200
+            self.FORMAT = pyaudio.paInt16
+            self.CHANNELS = 1
+            self.RATE = 16000
 
-        # Calling Python library to record audio
-        audio = pyaudio.PyAudio()
+            # Calling Python library to record audio
+            self.audio = pyaudio.PyAudio()
 
-        record = audio.open(
-                format=FORMAT,
-                channels=CHANNELS,
-                rate=RATE,
-                input=True,
-                frames_per_buffer=FRAMES_PER_BUFFER
-        )
-        
-        # Creates a label when recording completes.
-        ch2 = Label(win , text= "Your voice is Recorded!" , bg="paleturquoise" ,font= ("Posterama  16 bold"))
-        ch2.place(x= 140 , y = 220)
+            self.record = self.audio.open(
+                    format=self.FORMAT,
+                    channels=self.CHANNELS,
+                    rate=self.RATE,
+                    input=True,
+                    frames_per_buffer=self.FRAMES_PER_BUFFER
+            )
+            
+            # Creates a label when recording completes.
+            self.ch2 = Label(win , text= "Your voice is Recorded!" , bg="paleturquoise" ,font= ("Posterama  16 bold"))
+            self.ch2.place(x= 140 , y = 220)
 
-        # Defines recording interval by taking input from user.
-        seconds = float(sec)
-        frames = []
-        second_tracking = 0
-        second_count = 0
-        for i in range(0, int(RATE/FRAMES_PER_BUFFER*seconds)):
-                ch3 = Label(win, textvariable = f'Time Left: {seconds - second_count} seconds' , bg="paleturquoise")
-                ch3.place(x= 30 , y = 130)
-                data = record.read(FRAMES_PER_BUFFER)
-                frames.append(data)
-                second_tracking += 1
-                second_count += 1
+            # Defines recording interval by taking input from user.
+            self.seconds = float(self.sec)
+            self.frames = []
+            self.second_tracking = 0
+            self.second_count = 0
+            for i in range(0, int(self.RATE/self.FRAMES_PER_BUFFER*self.seconds)):
+                    self.ch3 = Label(win, textvariable = f'Time Left: {self.seconds - self.second_count} seconds' , bg="paleturquoise")
+                    self.ch3.place(x= 30 , y = 130)
+                    self.data = self.record.read(self.FRAMES_PER_BUFFER)
+                    self.frames.append(self.data)
+                    self.second_tracking += 1
+                    self.second_count += 1
 
 
-        record.stop_stream()
-        record.close()
-        audio.terminate()
+            self.record.stop_stream()
+            self.record.close()
+            self.audio.terminate()
 
-        # Stores recorded audio file
-        specimen = wave.open('Audio/user.wav', 'wb')
-        specimen.setnchannels(CHANNELS)
-        specimen.setsampwidth(audio.get_sample_size(FORMAT))
-        specimen.setframerate(RATE)
-        specimen.writeframes(b''.join(frames))
-        specimen.close()
+            # Stores recorded audio file
+            specimen = wave.open('Audio/user.wav', 'wb')
+            specimen.setnchannels(self.CHANNELS)
+            specimen.setsampwidth(self.audio.get_sample_size(self.FORMAT))
+            specimen.setframerate(self.RATE)
+            specimen.writeframes(b''.join(self.frames))
+            specimen.close()
 
 #-------------------- Login Win -------------------- #
 
 def loginWin():
-        clearWin(win_root)
+        functionality.clearWin(win_root)
 
         win_root.geometry("260x200")
 
@@ -113,7 +115,6 @@ def loginWin():
         passEntry.place(x=120 ,y = 80)
         
         #Login Button
-        database = Swara_Database.Database()
         login = lambda : database.login(userEntry,passEntry,chooseWin)  
         log_b = Button(win_root, fg="red", text = "Login"  ,font = "raleway 12 bold", command = login) #Checks and verify the login details
         log_b.place(x = 160, y = 130)
@@ -339,8 +340,8 @@ def recordWin():
     # Original File upload label
     org_music_l = Label(rec_root , text= "Original File : " , bg="paleturquoise",  font= ("Posterama  12 bold"))
     org_music_l.place(x= 20 , y= 80)
-    orgMusic_file_loc = fileInput(rec_root,20,80)
-    org_file_but = Button(rec_root , text= "Browse",command=lambda : fileInput(rec_root,20 , 80))#(120,140))
+    orgMusic_file_loc = functionality.fileInput(rec_root,20,80)
+    org_file_but = Button(rec_root , text= "Browse",command=lambda : functionality.fileInput(rec_root,20 , 80))#(120,140))
     org_file_but.place(x= 165 , y= 80)
     
     #Interval input label
@@ -353,7 +354,7 @@ def recordWin():
     
 
     # Record Audio button
-    record_button = Button(rec_root, text="Record Audio", command= lambda : recording(rec_root,sec_e) , font = " arial 15 bold", width = 14, height= 2,
+    record_button = Button(rec_root, text="Record Audio", command= lambda : functionality.recording(rec_root,sec_e) , font = " arial 15 bold", width = 14, height= 2,
                 relief = RAISED,fg="red" ) 
     record_button.place(x=170 , y=260)
 
@@ -412,15 +413,15 @@ def fileWin():
         #User File
         user_file_l = Label(f_root , text= "Recorded File :   " , bg="paleturquoise",  font= ("times  12  bold"))
         user_file_l.place(x= 30 , y = 85)
-        user_file_but = Button(f_root , text= "Browse",command=lambda : fileInput(f_root,30,85))
-        user_file_loc = fileInput(f_root,30,85)
+        user_file_but = Button(f_root , text= "Browse",command=lambda : functionality.fileInput(f_root,30,85))
+        user_file_loc = functionality.fileInput(f_root,30,85)
         user_file_but.place(x=140, y = 85)
 
         #Original File
         org_music_l = Label(f_root , text= "Original File : " , bg="paleturquoise" , font= ("times  12 bold"))
         org_music_l.place(x = 30,y=148)
-        org_file_but = Button(f_root , text= "Browse",command=lambda : fileInput(f_root,30,148))
-        orgMusic_file_loc = fileInput(f_root,30,148)
+        org_file_but = Button(f_root , text= "Browse",command=lambda : functionality.fileInput(f_root,30,148))
+        orgMusic_file_loc = functionality.fileInput(f_root,30,148)
         org_file_but.place(x=140, y = 148)
 
         
@@ -441,98 +442,92 @@ def fileWin():
 #---------------- Graph Input Win ------------------- #
 
 def graphWin():
-        # Defining File path Variables
-        global user_file_loc
-        global orgMusic_file_loc
+    # Defining File path Variables
+    global user_file_loc
+    global orgMusic_file_loc
+    global grp_root
 
-        if user_file_loc == "" or orgMusic_file_loc == "":
-              messagebox.showerror("Missing Inputs","Please provide both the files.")
+    #Configuring Main Window
+    grp_root = Toplevel(cnd_root) 
+    grp_root.grab_set()
+    grp_root.geometry("450x460")
+    grp_root.configure(bg="paleturquoise")
+    grp_root.resizable(False,False)
+    grp_root.geometry("1500x760") 
+    grp_root.title("Graph Input")
 
-        else:
-            #Configuring Main Window
-            grp_root = Toplevel(cnd_root) 
-            grp_root.grab_set()
-            grp_root.geometry("450x460")
-            grp_root.configure(bg="paleturquoise")
-            grp_root.resizable(False,False)
-            grp_root.geometry("1500x760") 
-            grp_root.title("Graph Input")
+    #Graph Window Header Frame
+    grp_h_fr=Frame(grp_root, bg="paleturquoise" )
+    grp_h_fr.pack(side=TOP, fill = X)
 
-            #Graph Window Header Frame
-            grp_h_fr=Frame(grp_root, bg="paleturquoise" )
-            grp_h_fr.pack(side=TOP, fill = X)
+    # Label for graph Window
+    grp_text=Label(grp_h_fr, text="GRAPH" , bg="paleturquoise" , fg = "red", font= ("Posterama  40"), pady= 10)
+    grp_text.pack()
+    
+    #Label to show which file has higher pitch
+    result_text = Label(grp_root, text="" , bg="paleturquoise" ,fg = "green",  font= ("Posterama  20"))
+    result_text.pack()               
 
-            # Label for graph Window
-            grp_text=Label(grp_h_fr, text="GRAPH" , bg="paleturquoise" , fg = "red", font= ("Posterama  40"), pady= 10)
-            grp_text.pack()
-            
-            #Label to show which file has higher pitch
-            result_text = Label(grp_root, text="" , bg="paleturquoise" ,fg = "green",  font= ("Posterama  20"))
-            result_text.pack()               
+    
+    #Code execution and selection.
+    try:    
+            fig = backend.plot_audio_files(user_file_loc,orgMusic_file_loc) 
+            backend.similarity_and_pitch(result_text,user_file_loc,orgMusic_file_loc)
 
-            
-            #Code execution and selection.
-            try:    
-                    fig = backend.plot_audio_files(user_file_loc,orgMusic_file_loc) 
-                    backend.similarity_and_pitch(result_text,user_file_loc,orgMusic_file_loc)
-
-            except:
-                    fig = backend.plot_audio_files(user_file_loc,orgMusic_file_loc) 
+    except:
+            fig = backend.plot_audio_files(user_file_loc,orgMusic_file_loc) 
 
 
-            #Placing  Matplotlib Graph in Tkinter GUI Window using canvas
+    #Placing  Matplotlib Graph in Tkinter GUI Window using canvas
 
-            canvas = FigureCanvasTkAgg(fig, master = grp_root)
-            canvas.draw()
-            canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=1)
-            
-            #Placing  Matplotlib Graph Toolbar in Tkinter GUI Window using canvas
+    canvas = FigureCanvasTkAgg(fig, master = grp_root)
+    canvas.draw()
+    canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=1)
+    
+    #Placing  Matplotlib Graph Toolbar in Tkinter GUI Window using canvas
+    toolbar = NavigationToolbar2Tk(canvas , grp_root)
+    toolbar.update()
+    canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=1)
+        
+    #Function for going back to Login Win
+    def back():
+        grp_root.destroy()
 
-            toolbar = NavigationToolbar2Tk(canvas , grp_root)
-            toolbar.update()
-            canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=1)
-
-                
-            #Function for going back to Login Win
-            def back():
-                grp_root.destroy()
-
-            #Back Button
-            back_b=Button(grp_root ,text="<--- Go Back",bd=6,command=back , fg = "red")
-            back_b.place(x=660, y= 720 )
+    #Back Button
+    back_b=Button(grp_root ,text="<--- Go Back",bd=6,command=back , fg = "red")
+    back_b.place(x=660, y= 720 )
         
 
 # ---------------------- Acknowledgement Window ------------------------#
+    def ackWin():
+            
+        functionality.clearWin(grp_root)
+        grp_root.geometry("400x300")
+        grp_root.title("Acknowledgement")
 
-        def ackWin():
-               
-                clearWin(grp_root)
-                grp_root.geometry("400x300")
-                grp_root.title("Acknowledgement")
+        # Graph Window Header Frame
+        ack_h_fr = Frame(grp_root, bg="paleturquoise")
+        ack_h_fr.pack(fill=X)
+        
 
-                # Graph Window Header Frame
-                ack_h_fr = Frame(grp_root, bg="paleturquoise")
-                ack_h_fr.pack(fill=X)
-                
+        # Thank You Label for Acknowledgement Window
+        thanks_l = Label(ack_h_fr, text="Thank You!!!\n\n\n\nFor using our software." , 
+                        bg="paleturquoise", fg="red", font=("Posterama  20") , pady =60)
+        thanks_l.pack()
 
-                # Thank You Label for Acknowledgement Window
-                thanks_l = Label(ack_h_fr, text="Thank You!!!\n\n\n\nFor using our software." , 
-                                bg="paleturquoise", fg="red", font=("Posterama  20") , pady =60)
-                thanks_l.pack()
-
-                # Message box
-                messagebox.showinfo("Work In progress","This Program is still under development.")   
-
-        # Creating Close Button    
-        log_b = Button(grp_root, fg="red", text = "CLOSE"  ,font = "raleway 12 bold", command = ackWin)
-        log_b.place(x=780, y=720)
+    # Creating Close Button    
+    log_b = Button(grp_root, fg="red", text = "CLOSE"  ,font = "raleway 12 bold", command = ackWin)
+    log_b.place(x=780, y=720)
 
 
 # ------------------- Main Window ---------------------- #
 
-#Window Properties
+#Windows 
 win_root = Tk() 
 signUp_win = None
+grp_root = None
+
+#Main Window Properties
 win_root.geometry("450x460")
 win_root.configure(bg="paleturquoise")
 win_root.resizable(False,False)
@@ -562,6 +557,7 @@ user_create_dob= StringVar()
 #Objects
 database = Swara_Database.Database()
 backend = Swara_Backend.Backend()
+functionality = Functionality()
 
 #Welcome Text frame
 wel_fr=Frame(win_root, bg="paleturquoise" )
