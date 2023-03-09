@@ -65,7 +65,7 @@ class Database:
 
         #Checking Details
         
-        #Empty Feilds
+        #Empty Fields
         if self.mobile_no == "" or self.email == "" :
              messagebox.showerror("Empty Feilds","Please fill all the feilds")
 
@@ -80,14 +80,17 @@ class Database:
             #If Mobile No. satisfies the above conditons
             else:
                 for current in self.data:
+                    #Mobile No and Email both exists
                     if (self.mobile_no in current) and (self.email in current):
                         messagebox.showerror("Already Exists","Email and Phone alread exist")
                         self.cond = False
-    
+
+                    #Only Email Exists
                     elif (self.mobile_no not in current) and (self.email in current):
                         messagebox.showerror("Already Exists","Email Already Exists")
                         self.cond = False
-    
+
+                    #Only Mobile No. Exists
                     elif (self.mobile_no in current) and (self.email not in current):
                         messagebox.showerror("Already Exists","Mobile No. Already Exists")
                         self.cond = False
@@ -95,6 +98,8 @@ class Database:
                     #Enabling the disaled Entries after verification is complete
                     else:
                         self.cond = True
+
+            #If Cond is returned True            
             if self.cond == True :
                 func()
     

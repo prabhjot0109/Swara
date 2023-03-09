@@ -9,8 +9,8 @@ import numpy as np
 
 # iuper Imposes graph in tkineter GUI
 from matplotlib.figure import Figure
-from scipy.fft import fft
-from scipy.spatial.distance import cosine
+# from scipy.fft import fft
+# from scipy.spatial.distance import cosine
 
 
 #Function For plotting Audio Graphs 
