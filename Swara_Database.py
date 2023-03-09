@@ -98,6 +98,8 @@ class Database:
                     #Enabling the disaled Entries after verification is complete
                     else:
                         self.cond = True
+
+            #If Cond is returned True            
             if self.cond == True :
                 func()
     
