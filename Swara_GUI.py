@@ -19,8 +19,10 @@ import Swara_Database
 
 
 #Functionality Class
+
 class Functionality:
     #Function for clearing Win
+
     def clearWin(self,window):
         for widgets in window.winfo_children():
             widgets.destroy()
@@ -63,6 +65,7 @@ class Functionality:
             self.ch2.place(x= 140 , y = 220)
 
             # Defines recording interval by taking input from user.
+
             self.seconds = float(self.sec)
             self.frames = []
             self.second_tracking = 0
@@ -80,13 +83,15 @@ class Functionality:
             self.record.close()
             self.audio.terminate()
 
-            # Stores recorded audio file
+            # Stores recorded audio file.
+
             specimen = wave.open('Audio/user.wav', 'wb')
             specimen.setnchannels(self.CHANNELS)
             specimen.setsampwidth(self.audio.get_sample_size(self.FORMAT))
             specimen.setframerate(self.RATE)
             specimen.writeframes(b''.join(self.frames))
             specimen.close()
+
 
 #-------------------- Login Win -------------------- #
 
