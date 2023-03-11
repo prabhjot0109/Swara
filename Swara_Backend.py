@@ -17,8 +17,13 @@ from matplotlib.figure import Figure
 class Backend :
     
     #Function For plotting Audio Graphs 
-    def plot_audio_files(self,user_file, org_file):
+    def plot_audio_files(self,user_file_e, org_file_e):
+
+        user_file = user_file_e.get()
+        org_file = org_file_e.get()
         
+        print(user_file,org_file,sep = "\n")
+
         if user_file == "" or org_file == "":
             messagebox.showerror("Missing Inputs","Please provide both the files.")
 

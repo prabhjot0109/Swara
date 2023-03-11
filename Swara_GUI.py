@@ -26,14 +26,17 @@ class Functionality:
             widgets.destroy()
 
     #Function for taking File Input 
-    def fileInput(self,win,b_x,b_y):
+    def fileInput(self,win,evar,b_x,b_y):
             self.file = filedialog.askopenfile(mode='r', filetypes=[('Music Files', '*.wav')])
             
             if self.file:
                     self.filePath = os.path.abspath(self.file.name)
                     self.path = self.filePath
-                    self.file_loc_l = Label(win , text = self.filePath ,font = "raleway 10 bold", bg="paleturquoise")
-                    self.file_loc_l.place(x = b_x, y = (b_y + 30))                        
+                    self.file_loc_e = Entry(win ,textvar = evar,font = "raleway 10 bold", bg="paleturquoise",bd = 0)
+                    self.file_loc_e.delete(first = 0,last = 500)
+                    self.file_loc_e.insert(0,f"{self.filePath}")
+                    self.file_loc_e.config(state = "disabled")
+                    self.file_loc_e.place(x = b_x, y = (b_y + 30))                        
                     return self.path
 
     #Function for recordign Audio
@@ -340,7 +343,7 @@ def recordWin():
     # Original File upload label
     org_music_l = Label(rec_root , text= "Original File : " , bg="paleturquoise",  font= ("Posterama  12 bold"))
     org_music_l.place(x= 20 , y= 80)
-    orgMusic_file_loc = functionality.fileInput(rec_root,20,80)
+    orgMusic_file_loc = functionality.fileInput(rec_root,orgMusic_file_loc_evar,20,80)
     org_file_but = Button(rec_root , text= "Browse",command=lambda : functionality.fileInput(rec_root,20 , 80))#(120,140))
     org_file_but.place(x= 165 , y= 80)
     
@@ -388,13 +391,8 @@ def fileWin():
         f_root.geometry("500x270")
         
         # Defining file path variables
-
         global user_file_loc
         global orgMusic_file_loc
-        
-        #Global Variables
-        user_file_loc = ""
-        orgMusic_file_loc = ""
 
         #File Header Frame
         file_h_fr=Frame(f_root, bg ="paleturquoise" )
@@ -413,15 +411,15 @@ def fileWin():
         #User File
         user_file_l = Label(f_root , text= "Recorded File :   " , bg="paleturquoise",  font= ("times  12  bold"))
         user_file_l.place(x= 30 , y = 85)
-        user_file_but = Button(f_root , text= "Browse",command=lambda : functionality.fileInput(f_root,30,85))
-        user_file_loc = functionality.fileInput(f_root,30,85)
+        user_file_but = Button(f_root , text= "Browse",command=lambda : functionality.fileInput(f_root,user_file_loc_evar,30,85))
+        user_file_loc = functionality.fileInput(f_root,user_file_loc_evar,30,85)
         user_file_but.place(x=140, y = 85)
 
         #Original File
         org_music_l = Label(f_root , text= "Original File : " , bg="paleturquoise" , font= ("times  12 bold"))
         org_music_l.place(x = 30,y=148)
-        org_file_but = Button(f_root , text= "Browse",command=lambda : functionality.fileInput(f_root,30,148))
-        orgMusic_file_loc = functionality.fileInput(f_root,30,148)
+        org_file_but = Button(f_root , text= "Browse",command=lambda : functionality.fileInput(f_root,orgMusic_file_loc_evar,30,148))
+        orgMusic_file_loc = functionality.fileInput(f_root,orgMusic_file_loc_evar,30,148)
         org_file_but.place(x=140, y = 148)
 
         
@@ -442,6 +440,7 @@ def fileWin():
 #---------------- Graph Input Win ------------------- #
 
 def graphWin():
+
     # Defining File path Variables
     global user_file_loc
     global orgMusic_file_loc
@@ -471,11 +470,11 @@ def graphWin():
     
     #Code execution and selection.
     try:    
-            fig = backend.plot_audio_files(user_file_loc,orgMusic_file_loc) 
-            backend.similarity_and_pitch(result_text,user_file_loc,orgMusic_file_loc)
+            fig = backend.plot_audio_files(user_file_loc_evar,orgMusic_file_loc_evar) 
+            backend.similarity_and_pitch(result_text,user_file_loc_evar,orgMusic_file_loc_evar)
 
     except:
-            fig = backend.plot_audio_files(user_file_loc,orgMusic_file_loc) 
+            fig = backend.plot_audio_files(user_file_loc_evar,orgMusic_file_loc_evar) 
 
 
     #Placing  Matplotlib Graph in Tkinter GUI Window using canvas
@@ -533,12 +532,12 @@ win_root.configure(bg="paleturquoise")
 win_root.resizable(False,False)
 win_root.title("Swara")
 
-#Global Variables
-# user_file_loc = ""
-# orgMusic_file_loc = ""
+# Global Variables
+user_file_loc = ""
+orgMusic_file_loc = ""
 
-user_file_loc = StringVar()
-orgMusic_file_loc = StringVar()
+user_file_loc_evar = StringVar()
+orgMusic_file_loc_evar = StringVar()
 
 
 #Variables for storing Login details 
