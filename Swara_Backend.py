@@ -91,7 +91,7 @@ class Backend :
 
 
     # Function for comparing Audio Files   
-    def similarity_and_pitch(self,text, user_file, org_file):
+    def similarity_and_pitch(self ,text,  user_file, org_file):
 
         # Loads audio files
         with wave.open(user_file, "rb") as self.wav_user_file:
@@ -123,8 +123,7 @@ class Backend :
 
         # Displays result in tkinter GUI
 
-        text.config(text=f"Pitch Comparison: {self.pitch_comparison}")
-        text.config(text=f"Pitch Comparison: {self.pitch_comparison}\nSimilarity: {self.similarity}%")
-        
+        self.text.config(text=f"Pitch Comparison: {self.pitch_comparison}")
+        #text.config(text=f"Pitch Comparison: {self.pitch_comparison}\nSimilarity: {self.similarity}%")
         # print(pitch_comparison,similarity)
 
