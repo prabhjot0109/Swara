@@ -44,54 +44,56 @@ class Functionality:
 
     #Function for recording Audio
     def recording(self,win,sec_e):
-            self.sec = sec_e.get()
-            self.FRAMES_PER_BUFFER = 3200
-            self.FORMAT = pyaudio.paInt16
-            self.CHANNELS = 1
-            self.RATE = 16000
+        self.sec = sec_e.get()
+        self.FRAMES_PER_BUFFER = 3200
+        self.FORMAT = pyaudio.paInt16
+        self.CHANNELS = 1
+        self.RATE = 16000
 
-            # Calling Python library to record audio
-            self.audio = pyaudio.PyAudio()
+        # Calling Python library to record audio
+        self.audio = pyaudio.PyAudio()
 
-            self.record = self.audio.open(
-                    format=self.FORMAT,
-                    channels=self.CHANNELS,
-                    rate=self.RATE,
-                    input=True,
-                    frames_per_buffer=self.FRAMES_PER_BUFFER
-            )
-            
-            # Creates a label when recording completes.
-            self.ch2 = Label(win , text= "Your voice is Recorded!" ,bg = "#141a1a" , fg="#f3b32d" ,font= ("Posterama  16 bold"))
-            self.ch2.place(x= 140 , y = 220)
+        self.record = self.audio.open(
+                format=self.FORMAT,
+                channels=self.CHANNELS,
+                rate=self.RATE,
+                input=True,
+                frames_per_buffer=self.FRAMES_PER_BUFFER
+        )
+        
+        # Creates a label when recording completes.
+        self.ch2 = Label(win , text= "Your voice is Recorded!" ,bg = "#141a1a" , fg="#f3b32d" ,font= ("Posterama  16 bold"))
+        self.ch2.place(x= 140 , y = 220)
 
-            # Defines recording interval by taking input from user.
+        # Defines recording interval by taking input from user.
 
-            self.seconds = float(self.sec)
-            self.frames = []
-            self.second_tracking = 0
-            self.second_count = 0
-            for i in range(0, int(self.RATE/self.FRAMES_PER_BUFFER*self.seconds)):
-                    self.ch3 = Label(win, textvariable = f'Time Left: {self.seconds - self.second_count} seconds' , bg="#1b191a")
-                    self.ch3.place(x= 30 , y = 130)
-                    self.data = self.record.read(self.FRAMES_PER_BUFFER)
-                    self.frames.append(self.data)
-                    self.second_tracking += 1
-                    self.second_count += 1
+        self.seconds = float(self.sec)
+        self.frames = []
+        self.second_tracking = 0
+        self.second_count = 0
+        for i in range(0, int(self.RATE/self.FRAMES_PER_BUFFER*self.seconds)):
+                self.ch3 = Label(win, textvariable = f'Time Left: {self.seconds - self.second_count} seconds' , bg="#1b191a")
+                self.ch3.place(x= 30 , y = 130)
+                self.data = self.record.read(self.FRAMES_PER_BUFFER)
+                self.frames.append(self.data)
+                self.second_tracking += 1
+                self.second_count += 1
 
 
-            self.record.stop_stream()
-            self.record.close()
-            self.audio.terminate()
+        self.record.stop_stream()
+        self.record.close()
+        self.audio.terminate()
 
-            # Stores recorded audio file.
+        # Stores recorded audio file.
 
-            specimen = wave.open('Audio/user.wav', 'wb')
-            specimen.setnchannels(self.CHANNELS)
-            specimen.setsampwidth(self.audio.get_sample_size(self.FORMAT))
-            specimen.setframerate(self.RATE)
-            specimen.writeframes(b''.join(self.frames))
-            specimen.close()
+        specimen = wave.open('Audio/user.wav', 'wb')
+        specimen.setnchannels(self.CHANNELS)
+        specimen.setsampwidth(self.audio.get_sample_size(self.FORMAT))
+        specimen.setframerate(self.RATE)
+        specimen.writeframes(b''.join(self.frames))
+        specimen.close()
+
+        
 
 # Button bg - #141a1a (Lighter Black)
 # Button Text - deeppink 
@@ -328,6 +330,8 @@ def chooseWin():
 def recordWin():
     
     global rec_root
+    global orgMusic_file_loc
+    global user_file_loc
 
     #Record Win Configurations
     rec_root = Toplevel(cnd_root) 
@@ -339,10 +343,10 @@ def recordWin():
 
     # Defining files path variables
 
-    global orgMusic_file_loc
-    global user_file_loc
+    cwd = os.getcwd()
+    user_file_loc = cwd + r"\Audio\user.wav"
 
-    user_file_loc = "Audio/user.wav"
+    #user_file_loc = "Audio/user.wav"
 
     #Command Win Header Frame
     ch_h_fr=Frame(rec_root, bg="#1b191a" )
@@ -481,11 +485,11 @@ def graphWin():
 
     #Code execution and selection.
     try:    
-            fig = backend.plot_audio_files(user_file_loc_evar,orgMusic_file_loc_evar) 
+            fig = backend.plot_audio_files(user_file_loc_evar,orgMusic_file_loc_evar,user_file_loc) 
             backend.similarity_and_pitch(result_text)
 
     except:
-            fig = backend.plot_audio_files(user_file_loc_evar,orgMusic_file_loc_evar) 
+            fig = backend.plot_audio_files(user_file_loc_evar,orgMusic_file_loc_evar,user_file_loc) 
 
 
     #Placing  Matplotlib Graph in Tkinter GUI Window using canvas

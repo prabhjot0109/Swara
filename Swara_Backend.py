@@ -1,5 +1,7 @@
 # Extractes raw data from .wav audio files
 import wave
+import pyaudio
+import os 
 
 # Plots graph of audio files
 import matplotlib.pyplot as plt
@@ -8,6 +10,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from tkinter import messagebox
+from tkinter import *
 
 # iuper Imposes graph in tkineter GUI
 from matplotlib.figure import Figure
@@ -15,26 +18,27 @@ from matplotlib.figure import Figure
 # from scipy.spatial.distance import cosine
 
 class Backend :
-    
     #Function For plotting Audio Graphs 
-    def plot_audio_files(self,user_file_e, org_file_e):
-
-        user_file = user_file_e.get()
-        org_file = org_file_e.get()
+    def plot_audio_files(self,user_file_e, org_file_e,recUser):
+        self.org_file = org_file_e.get()
+        self.user_file = user_file_e.get()
+        if self.user_file == "":
+            self.user_file = recUser
         
-        print(user_file,org_file,sep = "\n")
+        
+        print(self.user_file,self.org_file,sep = "\n")
 
-        if user_file == "" or org_file == "":
+        if self.user_file == "" or self.org_file == "":
             messagebox.showerror("Missing Inputs","Please provide both the files.")
 
         else:
             # Loads audio files
-            with wave.open(user_file, "rb") as self.wav_user_file:
+            with wave.open(self.user_file, "rb") as self.wav_user_file:
                 self.user_sr = self.wav_user_file.getframerate()
                 self.user_X = self.wav_user_file.readframes(self.wav_user_file.getnframes())
                 
 
-            with wave.open(org_file, "rb") as self.wav_org_file:
+            with wave.open(self.org_file, "rb") as self.wav_org_file:
                 self.org_sr = self.wav_org_file.getframerate()
                 self.org_X = self.wav_org_file.readframes(self.wav_org_file.getnframes())
                 
@@ -50,8 +54,8 @@ class Backend :
             self.fig = Figure(figsize=(5,4), dpi=100)
             self.ax = self.fig.add_subplot(111)
 
-            self.ax.plot(self.user_t, self.user_X, label=user_file, color="red", alpha=0.7)
-            self.ax.plot(self.org_t, self.org_X, label=org_file, color="green", zorder=0.6)
+            self.ax.plot(self.user_t, self.user_X, label=self.user_file, color="red", alpha=0.7)
+            self.ax.plot(self.org_t, self.org_X, label=self.org_file, color="green", zorder=0.6)
 
             plt.xlim(0, len(self.user_X))
 
@@ -78,7 +82,6 @@ class Backend :
         self.similarity = round(self.similarity, 2)
 
         # Displays result in tkinter GUI
-
         text.config(text=f"Pitch Comparison: {self.pitch_comparison}")
         #text.config(text=f"Pitch Comparison: {self.pitch_comparison}\nSimilarity: {self.similarity}%")
         # print(pitch_comparison,similarity)
