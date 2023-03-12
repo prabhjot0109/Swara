@@ -62,54 +62,10 @@ class Backend :
 
             return self.fig
 
-    def calculate_accuracy(self,user_file, org_file):
-        with wave.open(user_file, "rb") as self.wav_user_file:
-            self.user_sr = self.wav_user_file.getframerate()
-            self.user_X = self.wav_user_file.readframes(self.wav_user_file.getnframes())
-            
-        with wave.open(org_file, "rb") as wav_org_file:
-            self.org_sr = self.wav_org_file.getframerate()
-            self.org_X = self.wav_org_file.readframes(self.wav_org_file.getnframes())
-
-        # Convert audio files to numpy arrays
-        self.user_X = np.frombuffer(self.user_X, dtype=np.int16)
-        self.org_X = np.frombuffer(self.org_X, dtype=np.int16)
-
-        # # Calculate mean squared error (MSE)
-        # mse = np.square(np.subtract(user_X, org_X)).mean()
-
-        # # Calculate maximum possible amplitude and MSE
-        # max_amp = 2 ** 15  # 16-bit audio
-        # max_mse = max_amp ** 2
-
-        # # Calculate accuracy
-        # accuracy = (mse / max_mse)
-        
-        # print(accuracy)
-
-        # return accuracy
-
-
     # Function for comparing Audio Files   
-    def similarity_and_pitch(self ,text,  user_file, org_file):
-
-        # Loads audio files
-        with wave.open(user_file, "rb") as self.wav_user_file:
-            self.user_sr = self.wav_user_file.getframerate()
-            self.user_X = self.wav_user_file.readframes(self.wav_user_file.getnframes())
-            
-
-        with wave.open(org_file, "rb") as self.wav_org_file:
-            self.org_sr = self.wav_org_file.getframerate()
-            self.org_X = self.wav_org_file.readframes(self.wav_org_file.getnframes())
-            
-
-        # Convert audio files to numpy arrays
-        self.user_X = np.frombuffer(self.user_X, dtype=np.int16)
-        self.org_X = np.frombuffer(self.org_X, dtype=np.int16)
+    def similarity_and_pitch(self ,text):
 
         # Compare pitches
-
         if np.mean(self.user_X) > np.mean(self.org_X):
             self.pitch_comparison = 'File 1 has  higher pitch.'
         elif np.mean(self.user_X) < np.mean(self.org_X):
@@ -123,7 +79,7 @@ class Backend :
 
         # Displays result in tkinter GUI
 
-        self.text.config(text=f"Pitch Comparison: {self.pitch_comparison}")
+        text.config(text=f"Pitch Comparison: {self.pitch_comparison}")
         #text.config(text=f"Pitch Comparison: {self.pitch_comparison}\nSimilarity: {self.similarity}%")
         # print(pitch_comparison,similarity)
 

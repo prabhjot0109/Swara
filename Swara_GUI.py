@@ -12,6 +12,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg , NavigationTool
 import pyaudio
 import wave
 import os
+import time
 
 # Importing Custom Files
 import Swara_Backend
@@ -41,7 +42,7 @@ class Functionality:
                     self.file_loc_e.place(x = b_x, y = (b_y + 30))                        
                     return self.path
 
-    #Function for recordign Audio
+    #Function for recording Audio
     def recording(self,win,sec_e):
             self.sec = sec_e.get()
             self.FRAMES_PER_BUFFER = 3200
@@ -92,6 +93,10 @@ class Functionality:
             specimen.writeframes(b''.join(self.frames))
             specimen.close()
 
+# Button bg - #141a1a (Lighter Black)
+# Button Text - deeppink 
+# bg - #1b191a (Black)
+# fontcolour - #f3b32d (Golden Colour)
 
 #-------------------- Login Win -------------------- #
 
@@ -147,11 +152,7 @@ def createUserWin():
     signUp_win.configure(bg="#1b191a")  
     signUp_win.grab_set()
 
-# Button bg - #141a1a
-# Button Text - deeppink
-# bg - #1b191a
-# fontcolour - #c9c7c1
-# header - #f3b32d
+
 
     #Heading Frame
     h_frame= Frame(signUp_win , bg="#1b191a" ,bd=10)
@@ -475,14 +476,13 @@ def graphWin():
     grp_text.pack()
     
     #Label to show which file has higher pitch
-    result_text = Label(grp_root, text="" , fg="deeppink", bg= "white",  font= ("Posterama  20"))
+    result_text = Label(grp_root, fg="deeppink", bg= "white",  font= ("Posterama  20"))
     result_text.pack()               
 
-    
     #Code execution and selection.
     try:    
             fig = backend.plot_audio_files(user_file_loc_evar,orgMusic_file_loc_evar) 
-            backend.similarity_and_pitch(result_text,user_file_loc_evar,orgMusic_file_loc_evar)
+            backend.similarity_and_pitch(result_text)
 
     except:
             fig = backend.plot_audio_files(user_file_loc_evar,orgMusic_file_loc_evar) 
@@ -518,12 +518,13 @@ def graphWin():
         # Graph Window Header Frame
         ack_h_fr = Frame(grp_root, bg="#1b191a")
         ack_h_fr.pack(fill=X)
-        
 
         # Thank You Label for Acknowledgement Window
         thanks_l = Label(ack_h_fr, text="Thank You!!!\n\n\n\nFor using our software." , 
                         bg="#1b191a", fg="#f3b32d", font=("Posterama  20") , pady =60)
         thanks_l.pack()
+
+        win_root.destroy()
 
     # Creating Close Button    
     log_b = Button(grp_root, bg = "white" , fg= "deeppink" , text = "CLOSE"  ,font = "raleway 12 bold", command = ackWin)
@@ -571,7 +572,7 @@ functionality = Functionality()
 
 
 #Import image
-sw_photo = PhotoImage(file=r"C:\Users\hp\Downloads\Purple Modern Vezzra Entertainment Music Logo (1).png")
+sw_photo = PhotoImage(file=r"Images\front.png")
 sw_image = Label(image=sw_photo)
 sw_image.pack(anchor="center" )
 
@@ -585,9 +586,3 @@ start_b.place(x = 84 ,y =15)
 
 # Creates a loop. To re-execute tkinter gui again and again.
 win_root.mainloop()
-
-# Button bg - #141a1a
-# Button Text - deeppink
-# bg - #1b191a
-# fontcolour - #c9c7c1
-# header - #f3b32d
