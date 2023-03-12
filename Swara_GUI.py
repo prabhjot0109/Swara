@@ -34,7 +34,7 @@ class Functionality:
             if self.file:
                     self.filePath = os.path.abspath(self.file.name)
                     self.path = self.filePath
-                    self.file_loc_e = Entry(win ,textvar = evar,font = "raleway 10 bold", bg="paleturquoise",bd = 0)
+                    self.file_loc_e = Entry(win ,textvar = evar,font = "raleway 10 bold", bg="paleturquoise",bd = 0,width = 100)
                     self.file_loc_e.delete(first = 0,last = 500)
                     self.file_loc_e.insert(0,f"{self.filePath}")
                     self.file_loc_e.config(state = "disabled")
@@ -99,24 +99,25 @@ def loginWin():
         functionality.clearWin(win_root)
 
         win_root.geometry("260x200")
+        win_root.config(bg = "#1b191a")
 
         #Login Win Header Frame
-        login_h_fr=Frame(win_root, bg="paleturquoise" )
+        login_h_fr=Frame(win_root, bg="#1b191a",bd = 2)
         login_h_fr.pack(side=TOP, fill = X)
 
         #Login Label
-        login_text=Label(login_h_fr, text="LOGIN" ,bg="paleturquoise", fg = "red", font= ("Posterama  20 bold"), padx = 200 , pady = 10)
+        login_text=Label(login_h_fr, text="LOGIN" ,bg="#1b191a", fg = "#f3b32d", font= ("Posterama  20 bold"), padx = 200 , pady = 10)
         login_text.pack()
 
         #User
-        user = Label(win_root , text= "Username ID  :   ", bg="paleturquoise")
+        user = Label(win_root , text= "Username ID  :   ", bg="#1b191a",fg = "#c9c7c1")
         user.place(x= 30 , y = 58)
 
         userEntry = Entry(win_root , textvariable =uservalue )
         userEntry.place(x=120, y = 58)
 
         #Password
-        password = Label(win_root , text= "Password : ", bg="paleturquoise")  
+        password = Label(win_root , text= "Password : ", bg="#1b191a", fg = "#c9c7c1")  
         password.place(x = 30,y=80)
 
         passEntry = Entry(win_root , textvariable = passvalue, show = "*")
@@ -124,11 +125,11 @@ def loginWin():
         
         #Login Button
         login = lambda : database.login(userEntry,passEntry,chooseWin)  
-        log_b = Button(win_root, fg="red", text = "Login"  ,font = "raleway 12 bold", command = login) #Checks and verify the login details
+        log_b = Button(win_root,bg = "#141a1a", fg="#f3b32d", text = "Login"  ,font = "raleway 12 bold", command = login) #Checks and verify the login details
         log_b.place(x = 160, y = 130)
 
         #Create User Button
-        c_user_b = Button(win_root, fg = "red", text = "Sign - Up", font = " raleway 12 bold" ,command= createUserWin)
+        c_user_b = Button(win_root,bg = "#141a1a", fg = "#f3b32d", text = "Sign - Up", font = " raleway 12 bold" ,command= createUserWin)
         c_user_b.place(x = 30, y = 130)
 
 
@@ -532,10 +533,11 @@ signUp_win = None
 grp_root = None
 
 #Main Window Properties
-win_root.geometry("450x460")
-win_root.configure(bg="paleturquoise")
+win_root.geometry("450x450")
+win_root.configure(bg="#131641")
 win_root.resizable(False,False)
 win_root.title("Swara")
+
 
 # Global Variables
 user_file_loc = ""
@@ -563,24 +565,16 @@ database = Swara_Database.Database()
 backend = Swara_Backend.Backend()
 functionality = Functionality()
 
-#Welcome Text frame
-wel_fr=Frame(win_root, bg="paleturquoise" )
-wel_fr.pack(side=TOP, fill = X)
-
-#Welcome Label
-wel_text=Label(wel_fr, bg = "paleturquoise" , text="SWARA", fg = "red", font= ("Posterama  40 bold"), padx = 200 , pady=10)
-wel_text.pack()
 
 #Import image
-sw_photo = PhotoImage(file="Images\logo.png")
-sw_image = Label(image=sw_photo,bg = "paleturquoise")
-sw_image.place(x = 230,y = 200,anchor="center")
-
+sw_photo = PhotoImage(file=r"Images\full.png")
+sw_image = Label(image=sw_photo,bg = "#131641")
+sw_image.place(x = 230,y = 200)
 
 #Start Button
 start_b = Button(win_root, text = "START",font = " arial 20 bold", width = 10, height= 2, bd = 5 
                   ,fg="red" , command =  loginWin)
-start_b.place(x = 230,y = 380,anchor='center')
+start_b.place(x = 230,y = 400,anchor='center')
 
 # Creates a loop. To re-execute tkinter gui again and again.
 win_root.mainloop()
