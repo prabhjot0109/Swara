@@ -544,6 +544,7 @@ grpWin = None
 winRoot.geometry("460x450")
 winRoot.resizable(False,False)
 winRoot.title("Swara")
+# winRoot.iconphoto(True,PhotoImage(file = "Images/logo3.png"))
 
 
 # Global Variables
@@ -581,7 +582,7 @@ swaraImageLabel.pack(anchor="center" )
 #Start Button
 startButtonImg = PhotoImage(file = r"Images\btn.png")
 startButton = Button(winRoot,image = startButtonImg   , fg="red" , bg = "#1b191a",  command =  loginWin , relief = "flat") 
-startButton.place(x = 84 ,y =15)
+startButton.place(x = 82 ,y = 20)
 
 # Creates a loop. To re-execute tkinter gui again and again.
 winRoot.mainloop()
