@@ -21,7 +21,7 @@ import Swara_Database
 
 #Functionality Class
 
-class Functionality:
+class Functionality: 
     #Function for clearing Win
 
     def clearWin(self,window):
@@ -35,11 +35,11 @@ class Functionality:
             if self.file:
                     self.filePath = os.path.abspath(self.file.name)
                     self.path = self.filePath
-                    self.fileLabelocEntry = Entry(win ,textvar = evar,font = "raleway 10 bold", bg="#1b191a",bd = 0,width = 200)
-                    self.fileLabelocEntry.delete(first = 0,last = 500)
-                    self.fileLabelocEntry.insert(0,f"{self.filePath}")
-                    self.fileLabelocEntry.config(state = "disabled" ,  bg="#1b191a")
-                    self.fileLabelocEntry.place(x = b_x, y = (b_y + 30))                        
+                    self.fileLocationEntry = Entry(win ,textvar = evar,font = "raleway 10 bold", bg="#1b191a",bd = 0,width = 200)
+                    self.fileLocationEntry.delete(first = 0,last = 500)
+                    self.fileLocationEntry.insert(0,f"{self.filePath}")
+                    self.fileLocationEntry.config(state = "disabled" ,  bg="#1b191a")
+                    self.fileLocationEntry.place(x = b_x, y = (b_y + 30))                        
                     return self.path
 
     #Function for recording Audio
