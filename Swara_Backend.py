@@ -18,46 +18,53 @@ from matplotlib.figure import Figure
 # from scipy.spatial.distance import cosine
 
 class Backend :
-    #Function For plotting Audio Graphs 
-    def plot_audio_files(self,user_file_e, org_file_e,recUser):
-        self.org_file = org_file_e.get()
-        self.user_file = user_file_e.get()
-        if self.user_file == "":
-            self.user_file = recUser
-        
-        
-        print(self.user_file,self.org_file,sep = "\n")
+       
+              
 
-        if self.user_file == "" or self.org_file == "":
+    #Function For plotting Audio Graphs 
+    def plotAudioFiles(self,win,orgFileEntry,userFileEntry,recUser):
+        self.orgFile = ""
+        self.userFile = ""
+        self.orgFile  = orgFileEntry.get()
+        self.userFile = userFileEntry.get()
+        if self.userFile == "":
+            self.userFile = recUser
+        
+        
+        print(self.userFile,self.orgFile,sep = "\n")
+
+        if self.userFile == "" or self.orgFile == "":
             messagebox.showerror("Missing Inputs","Please provide both the files.")
+            win.destroy()
+
 
         else:
             # Loads audio files
-            with wave.open(self.user_file, "rb") as self.wav_user_file:
-                self.user_sr = self.wav_user_file.getframerate()
-                self.user_X = self.wav_user_file.readframes(self.wav_user_file.getnframes())
+            with wave.open(self.userFile, "rb") as self.wavUserFile:
+                self.userSr = self.wavUserFile.getframerate()
+                self.userX = self.wavUserFile.readframes(self.wavUserFile.getnframes())
                 
 
-            with wave.open(self.org_file, "rb") as self.wav_org_file:
-                self.org_sr = self.wav_org_file.getframerate()
-                self.org_X = self.wav_org_file.readframes(self.wav_org_file.getnframes())
+            with wave.open(self.orgFile, "rb") as self.wav_orgFile:
+                self.orgSr = self.wav_orgFile.getframerate()
+                self.orgX = self.wav_orgFile.readframes(self.wav_orgFile.getnframes())
                 
             # Convert audio files to numpy arrays
-            self.user_X = np.frombuffer(self.user_X, dtype=np.int16)
-            self.org_X = np.frombuffer(self.org_X, dtype=np.int16)
+            self.userX = np.frombuffer(self.userX, dtype=np.int16)
+            self.orgX = np.frombuffer(self.orgX, dtype=np.int16)
             
             #Time = Frame Data/No. of Frames
-            self.user_t = np.arange(self.user_X.size) / self.user_sr
-            self.org_t = np.arange(self.org_X.size) / self.org_sr
+            self.userTime = np.arange(self.userX.size) / self.userSr
+            self.orgTime = np.arange(self.orgX.size) / self.orgSr
 
             # Plot waveform graph
             self.fig = Figure(figsize=(5,4), dpi=100)
             self.ax = self.fig.add_subplot(111)
 
-            self.ax.plot(self.user_t, self.user_X, label=self.user_file, color="red", alpha=0.7)
-            self.ax.plot(self.org_t, self.org_X, label=self.org_file, color="green", zorder=0.6)
+            self.ax.plot(self.userTime, self.userX, label=self.userFile, color="red", alpha=0.7)
+            self.ax.plot(self.orgTime, self.orgX, label=self.orgFile, color="green", zorder=0.6)
 
-            plt.xlim(0, len(self.user_X))
+            plt.xlim(0, len(self.userX))
 
             self.ax.set_xlabel("Time (s)")
             self.ax.set_ylabel("Amplitude")
@@ -67,22 +74,22 @@ class Backend :
             return self.fig
 
     # Function for comparing Audio Files   
-    def similarity_and_pitch(self ,text):
+    def comparison(self ,text):
 
         # Compare pitches
-        if np.mean(self.user_X) > np.mean(self.org_X):
-            self.pitch_comparison = 'File 1 has  higher pitch.'
-        elif np.mean(self.user_X) < np.mean(self.org_X):
-            self.pitch_comparison = 'File 2 has higher pitch.'
+        if np.mean(self.userX) > np.mean(self.orgX):
+            self.pitchComparison = 'File 1 has  higher pitch.'
+        elif np.mean(self.userX) < np.mean(self.orgX):
+            self.pitchComparison = 'File 2 has higher pitch.'
         else:
-            self.pitch_comparison = 'Both the files have the same pitch.'
+            self.pitchComparison = 'Both the files have the same pitch.'
 
         # Calculate similarity percentage
-        self.similarity = np.corrcoef(self.user_X, self.org_X)[0, 1] * 100
+        self.similarity = np.corrcoef(self.userX, self.orgX)[0, 1] * 100
         self.similarity = round(self.similarity, 2)
 
         # Displays result in tkinter GUI
-        text.config(text=f"Pitch Comparison: {self.pitch_comparison}")
-        #text.config(text=f"Pitch Comparison: {self.pitch_comparison}\nSimilarity: {self.similarity}%")
-        # print(pitch_comparison,similarity)
+        text.config(text=f"Pitch Comparison: {self.pitchComparison}")
+        #text.config(text=f"Pitch Comparison: {self.pitchComparison}\nSimilarity: {self.similarity}%")
+        # print(pitchComparison,similarity)
 
