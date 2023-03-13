@@ -38,7 +38,7 @@ class Functionality:
                     self.fileLocationEntry = Entry(win ,textvar = evar,font = "raleway 10 bold", bg="#1b191a",bd = 0,width = 200)
                     self.fileLocationEntry.delete(first = 0,last = 500)
                     self.fileLocationEntry.insert(0,f"{self.filePath}")
-                    self.fileLocationEntry.config(state = "disabled" ,  bg="#1b191a")
+                    self.fileLocationEntry.config(state = "disabled")
                     self.fileLocationEntry.place(x = b_x, y = (b_y + 30))                        
                     return self.path
 
@@ -464,21 +464,21 @@ def graphWin():
     grpWin = Toplevel(commandWin) 
     grpWin.grab_set()
     grpWin.geometry("450x460")
-    grpWin.configure(bg="white")
+    grpWin.configure(bg="grey94")
     grpWin.resizable(False,False)
     grpWin.geometry("1500x760") 
     grpWin.title("Graph Input")
 
     #Graph Window Header Frame
-    graphHeaderFrame=Frame(grpWin, bg="white" )
+    graphHeaderFrame=Frame(grpWin, bg="grey94" )
     graphHeaderFrame.pack(side=TOP, fill = X)
 
     # Label for graph Window
-    graphLabel=Label(graphHeaderFrame, text="GRAPH" , bg="white" ,  fg="#f3b32d", font= ("Posterama  40"), pady= 10)
+    graphLabel=Label(graphHeaderFrame, text="GRAPH" , bg="grey94" ,  fg="#f3b32d", font= ("Posterama  40"), pady= 10)
     graphLabel.pack()
     
     #Label to show which file has higher pitch
-    resultLabel = Label(grpWin, fg="deeppink", bg= "white",  font= ("Posterama  20"))
+    resultLabel = Label(grpWin, fg="deeppink", bg= "grey94",  font= ("Posterama  20"))
     resultLabel.pack()               
 
     #Code execution and selection.
@@ -544,8 +544,6 @@ grpWin = None
 winRoot.geometry("460x450")
 winRoot.resizable(False,False)
 winRoot.title("Swara")
-# winRoot.iconphoto(True,PhotoImage(file = "Images/logo3.png"))
-
 
 # Global Variables
 userFileLoc = ""
