@@ -1,7 +1,5 @@
 # Extractes raw data from .wav audio files
 import wave
-import pyaudio
-import os 
 
 # Plots graph of audio files
 import matplotlib.pyplot as plt
@@ -14,12 +12,8 @@ from tkinter import *
 
 # iuper Imposes graph in tkineter GUI
 from matplotlib.figure import Figure
-# from scipy.fft import fft
-# from scipy.spatial.distance import cosine
 
 class Backend :
-       
-              
 
     #Function For plotting Audio Graphs 
     def plotAudioFiles(self,win,orgFileEntry,userFileEntry,recUser):
@@ -33,6 +27,7 @@ class Backend :
         
         print(self.userFile,self.orgFile,sep = "\n")
 
+        #Checks for No File Inputs
         if self.userFile == "" or self.orgFile == "":
             messagebox.showerror("Missing Inputs","Please provide both the files.")
             win.destroy()
