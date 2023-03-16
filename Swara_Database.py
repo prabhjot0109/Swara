@@ -35,7 +35,7 @@ class Database:
             self.username = userEntry.get()
 
             self.cur.execute("SELECT Username,Password FROM users")
-            self.data_retrieved=self.cur.fetchall()       #Storing username and password from database
+            self.dataRetrieved=self.cur.fetchall()       #Storing username and password from database
 
             #Condition for Empty Entry Box
             if self.username == "" or self.password == "":
@@ -43,7 +43,7 @@ class Database:
 
             else:
                     #Correct Creditionals
-                    if (self.username,self.password) in self.data_retrieved:
+                    if (self.username,self.password) in self.dataRetrieved:
                             messagebox.showinfo("Success","You have Logged In Successfully.")
                             func()               
                     #Incorrect Creditionals                         

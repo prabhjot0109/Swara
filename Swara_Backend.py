@@ -26,6 +26,7 @@ class Backend :
         
         print(self.userFile,self.orgFile,sep = "\n")
 
+        #Checks for No File Inputs
         if self.userFile == "" or self.orgFile == "":
             messagebox.showerror("Missing Inputs","Please provide both the files.")
             win.destroy()
