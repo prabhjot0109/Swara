@@ -2,22 +2,8 @@ import librosa
 import numpy as np
 
 # Load audio files
-audio_file_1, sr_1 = librosa.load("D:/Coding/Swara-master/Audio/user.wav")
-audio_file_2, sr_2 = librosa.load("D:/Coding/Swara-master/Audio/user1.wav")
-
-
-# 86.90
-
-
-#57.87
-#  91.92
-
-#62.47
-#67.26
-#57.40
-##83.50
-
-#79.42
+audio_file_1, sr_1 = librosa.load("Audio/user.wav")
+audio_file_2, sr_2 = librosa.load("Audio/user1.wav")
 
 # Compute chroma features for each audio file
 chroma_1 = librosa.feature.chroma_cqt(y=audio_file_1, sr=sr_1)

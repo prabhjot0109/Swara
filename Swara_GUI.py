@@ -1,7 +1,5 @@
 # Libraries for creating GUI
 from tkinter import *
-import tkinter as tk
-from tkinter import messagebox
 from tkinter import filedialog
 from tkcalendar import *
 
@@ -12,12 +10,10 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg , NavigationTool
 import pyaudio
 import wave
 import os
-import time
 
 # Importing Custom Files
 import Swara_Backend
 import Swara_Database
-
 
 #Functionality Class
 
@@ -47,7 +43,7 @@ class Functionality:
         self.sec = invervalSecEntry.get()
         self.FRAMES_PER_BUFFER = 3200
         self.FORMAT = pyaudio.paInt16
-        self.CHANNELS = 1
+        self.CHANNELS = 1   
         self.RATE = 16000
 
         # Calling Python library to record audio
@@ -66,7 +62,6 @@ class Functionality:
         self.ch2.place(x= 140 , y = 220)
 
         # Defines recording interval by taking input from user.
-
         self.seconds = float(self.sec)
         self.frames = []
         self.second_tracking = 0
@@ -92,8 +87,6 @@ class Functionality:
         specimen.setframerate(self.RATE)
         specimen.writeframes(b''.join(self.frames))
         specimen.close()
-
-        
 
 # Button bg - #141a1a (Lighter Black)
 # Button Text - deeppink 
@@ -281,7 +274,7 @@ def createUserWin():
     #Back Button
     backCreateUserButton = Button(signUpWin ,text="<--- Go Back to Login",bd=6,command=back , fg = "deeppink" ,bg = "#141a1a")
     backCreateUserButton.place( x= 6 , y= 450 )
-        
+
 
 #-----------------Choose option window---------------#
 
@@ -388,7 +381,6 @@ def recordWin():
     backRecButton=Button(recordingWin ,text="<--- Go Back", bg = "#141a1a" , fg= "deeppink" ,bd=6,command=back )
     backRecButton.place(x= 10 , y=400)
   
-
 
 #------------------ File Input Win -------------------#
 
@@ -551,7 +543,6 @@ orgFileLoc = ""
 
 userFileLocEntry = StringVar()
 orgFileLocEntry = StringVar()
-
 
 #Variables for storing Login details 
 userValue = StringVar()
