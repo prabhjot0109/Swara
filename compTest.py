@@ -13,7 +13,9 @@ chroma_2 = librosa.feature.chroma_cqt(y=audio_file_2, sr=sr_2)
 n_frames = min(chroma_1.shape[1], chroma_2.shape[1])
 similarities = np.zeros(n_frames)
 for i in range(n_frames):
-    similarities[i] = np.dot(chroma_1[:, i], chroma_2[:, i]) / (np.linalg.norm(chroma_1[:, i]) * np.linalg.norm(chroma_2[:, i]))
+    similarities[i] = np.dot(chroma_1[:, i], chroma_2[:, i]) / (
+        np.linalg.norm(chroma_1[:, i]) * np.linalg.norm(chroma_2[:, i])
+    )
 
 # Compute the average similarity score
 similarity = np.mean(similarities) * 100
